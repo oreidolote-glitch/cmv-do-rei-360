@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.26-base-14-insumo-cozinha">
+<meta name="cmv-do-rei-version" content="360.27-base-14-insumo-excluir">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -537,7 +537,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     </div>
     <label>Estoque mínimo</label><input id="eiMin" type="number" step="0.001" min="0">
     <div class="notice">Use esta edição para corrigir erro de cadastro. Compras novas devem ser registradas em <b>Compras → Compra de Insumos</b>, pois o app calcula o custo médio automaticamente.</div>
-    <div class="row"><button id="btnSalvarInsumoEdit" class="btn" onclick="salvarEdicaoInsumo()">💾 Salvar correção</button><button class="btn secondary" onclick="fecharEdicaoInsumo()">Cancelar</button></div>
+    <div class="row"><button id="btnSalvarInsumoEdit" class="btn" onclick="salvarEdicaoInsumo()">💾 Salvar correção</button><button class="btn secondary" onclick="fecharEdicaoInsumo()">Cancelar</button></div><button id="btnInativarInsumo" class="btn danger" onclick="inativarInsumoSelecionado()" style="margin-top:10px">🗑️ Excluir insumo</button>
     <div id="editInsumoMsg"></div>
   </div>
 
@@ -3415,6 +3415,20 @@ function abrirEdicaoInsumo(id){
   $('editInsumoCard').classList.remove('hide');$('editInsumoCard').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function fecharEdicaoInsumo(){if($('editInsumoCard'))$('editInsumoCard').classList.add('hide');if($('editInsumoMsg'))$('editInsumoMsg').innerHTML=''}
+async function inativarInsumoSelecionado(){
+  if(!(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador'))return msg('editInsumoMsg','Somente a gestão pode excluir insumos.',true);
+  const id=$('eiId')?.value,atual=(insumosCadastro||[]).find(x=>x.id===id);if(!id||!atual)return msg('editInsumoMsg','Insumo não encontrado.',true);
+  const total=Number(atual.estoque_atual||0)+Number(atual.estoque_central||0);
+  if(total>0)return msg('editInsumoMsg','Este insumo ainda possui estoque. Zere o saldo antes de excluir.',true);
+  if(!confirm('Excluir '+(atual.codigo?atual.codigo+' · ':'')+atual.nome+'? Ele sairá das listas ativas, mas o histórico ficará preservado.'))return;
+  const b=$('btnInativarInsumo');if(b)b.disabled=true;
+  try{
+    await json(await api('/rest/v1/insumos?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({ativo:false})}));
+    msg('editInsumoMsg','Insumo excluído das listas ativas. Histórico preservado.');
+    await Promise.all([loadInsumos(),loadCozinha(),loadInsumosCompra(),loadFichaOpcoes(),loadDashboard()]);
+    setTimeout(fecharEdicaoInsumo,500);
+  }catch(e){msg('editInsumoMsg',friendly(e),true)}finally{if(b)b.disabled=false}
+}
 async function salvarEdicaoInsumo(){
   const id=$('eiId')?.value,nome=String($('eiNome')?.value||'').trim(),setor=$('eiSetor')?.value||'cozinha',unidade=$('eiUnidade')?.value||'un',custoTxt=String($('eiCusto')?.value??'').trim(),minTxt=String($('eiMin')?.value??'0').trim();
   if(!id||!nome)return msg('editInsumoMsg','Informe o nome do insumo.',true);if(custoTxt==='')return msg('editInsumoMsg','Informe o custo correto do insumo.',true);
