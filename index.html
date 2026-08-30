@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.28-cozinha-editar-excluir">
+<meta name="cmv-do-rei-version" content="360.29-lock14-erro-lancamento">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1918,6 +1918,25 @@ async function signOut(){
   try{if(tok()&&perfilAtual?.ativo)await json(await api('/rest/v1/rpc/registrar_evento_app',{method:'POST',body:JSON.stringify({p_evento:'LOGOUT',p_detalhe:'Saiu do CMV do Rei 360'})}))}catch(e){}
   limparSessao()
 }
+const MENU_OFICIAL_14=[
+  ['home','Painel'],['produtos','Produtos'],['vendas','Vendas'],['compras','Compras'],['central','📦 Central'],['inventario','📋 Inventário'],['cmvProdutos','CMV Produto'],['perdas','Perdas'],['cozinha','Cozinha'],['bar','Bar'],['drinks','Drinks'],['fechamento','CMV'],['materiais','Materiais'],['conta','Conta']
+];
+function garantirMenuOficial14(){
+  const inside=document.querySelector('nav.tabs .inside');
+  if(!inside)return false;
+  const atuais=[...inside.querySelectorAll('button.tab')];
+  const rotulos=atuais.map(b=>b.textContent.trim());
+  const esperados=MENU_OFICIAL_14.map(x=>x[1]);
+  const valido=atuais.length===14&&esperados.every((t,i)=>rotulos[i]===t);
+  if(valido)return true;
+  console.error('BLOQUEIO DE REGRESSÃO: menu principal fora do padrão oficial de 14 botões. Reconstruindo.');
+  inside.innerHTML=MENU_OFICIAL_14.map(([id,label],i)=>{
+    if(id==='inventario')return '<button class="tab tab-inventario" onclick="abrirInventarioPrincipal(this)">'+label+'</button>';
+    return '<button class="tab'+(i===0?' active':'')+'" onclick="go(\''+id+'\',this)">'+label+'</button>';
+  }).join('');
+  return inside.querySelectorAll('button.tab').length===14;
+}
+
 async function showApp(registrarLogin=false,nome=''){
   try{
     perfilAtual=await garantirAcesso(nome);
@@ -1925,6 +1944,7 @@ async function showApp(registrarLogin=false,nome=''){
       limparSessao();
       return msg('authMsg','Acesso solicitado. Agora aguarde o administrador aprovar este usuário no menu Conta.',false)
     }
+    garantirMenuOficial14();
     $('auth').classList.add('hide');$('app').classList.remove('hide');
     $('userEmail').textContent=(perfilAtual.nome||'Usuário')+' · '+(perfilAtual.email||localStorage.getItem('cmv_email')||'');
     if(registrarLogin){try{await json(await api('/rest/v1/rpc/registrar_evento_app',{method:'POST',body:JSON.stringify({p_evento:'LOGIN',p_detalhe:'Entrou no CMV do Rei 360'})}))}catch(e){}}
@@ -4685,12 +4705,26 @@ async function loadCentralDivergenciasEstoque(){
   }catch(e){status.innerHTML='<b>🔴 NÃO FOI POSSÍVEL CARREGAR</b><br>'+esc(friendly(e));box.textContent='Tente novamente.'}
 }
 async function resolverDivergenciaEstoque(id,classificacao){
-  const nomes={PERDA:'registrar como PERDA',ERRO_LANCAMENTO:'corrigir como ERRO DE LANÇAMENTO',AJUSTE_AUTORIZADO:'aplicar AJUSTE AUTORIZADO'};
-  if(!confirm('Confirmar: '+(nomes[classificacao]||classificacao)+'? A decisão aplica somente a diferença da contagem sobre o saldo atual.'))return;
+  const nomes={PERDA:'registrar como PERDA',ERRO_LANCAMENTO:'encerrar como ERRO DE LANÇAMENTO sem alterar estoque',AJUSTE_AUTORIZADO:'aplicar AJUSTE AUTORIZADO'};
+  const aviso=classificacao==='ERRO_LANCAMENTO'
+    ?'Confirmar ERRO DE LANÇAMENTO? Esta decisão apenas encerra a divergência e NÃO altera o estoque.'
+    :'Confirmar: '+(nomes[classificacao]||classificacao)+'? A decisão aplica somente a diferença da contagem sobre o saldo atual.';
+  if(!confirm(aviso))return;
   const obs=$('crDivObs_'+id)?.value||'';
   try{
-    const d=await json(await api('/rest/v1/rpc/resolver_contagem_rapida_estoque',{method:'POST',body:JSON.stringify({p_contagem_id:id,p_classificacao:classificacao,p_observacao:obs})}));
-    alert('Divergência resolvida: '+(d.nome||'item')+' · '+String(d.classificacao||'').replaceAll('_',' ')+'. 👑');
+    let d={classificacao};
+    if(classificacao==='ERRO_LANCAMENTO'){
+      // Erro de lançamento é uma classificação administrativa. Nunca deve movimentar estoque.
+      await json(await api('/rest/v1/contagens_rapidas_estoque?id=eq.'+encodeURIComponent(id),{
+        method:'PATCH',
+        headers:{'Prefer':'return=representation'},
+        body:JSON.stringify({status:'RESOLVIDA',classificacao:'ERRO_LANCAMENTO',resolvido_em:new Date().toISOString()})
+      }));
+      d.nome='item';
+    }else{
+      d=await json(await api('/rest/v1/rpc/resolver_contagem_rapida_estoque',{method:'POST',body:JSON.stringify({p_contagem_id:id,p_classificacao:classificacao,p_observacao:obs})}));
+    }
+    alert(classificacao==='ERRO_LANCAMENTO'?'Divergência encerrada como ERRO DE LANÇAMENTO. Estoque preservado. 👑':'Divergência resolvida: '+(d.nome||'item')+' · '+String(d.classificacao||classificacao).replaceAll('_',' ')+'. 👑');
     await Promise.all([loadProdutos(),loadInsumos(),loadDashboard(),loadHistoricoContagemRapida(),loadCentralDivergenciasEstoque()]);
   }catch(e){alert(friendly(e))}
 }
