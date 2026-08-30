@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.17-insumo-cozinha">
+<meta name="cmv-do-rei-version" content="360.26-base-14-insumo-cozinha">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -31,11 +31,14 @@ label{font-size:13px;color:#ddd}
 .btn.small{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 0 0}
 .btn.danger{background:#311613;color:var(--danger);border:1px solid #5d211d}
 .row{display:flex;gap:10px}.row>*{flex:1}
-.tabs{position:sticky;top:env(safe-area-inset-top);margin:0 -16px 18px;background:#0b0b0bf2;border-top:1px solid #292929;border-bottom:1px solid #292929;box-shadow:0 8px 18px #0008;display:flex;padding:9px 0;z-index:30;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none}
+.tabs{position:relative;margin:0 -16px 18px;background:#0b0b0bf2;border-top:1px solid #292929;border-bottom:1px solid #292929;box-shadow:0 8px 18px #0008;display:block;padding:14px 0;z-index:30;overflow:visible}
 .tabs::-webkit-scrollbar{display:none}
-.tabs .inside{display:flex;gap:6px;width:max-content;min-width:100%;padding:0 16px}
-.tab{width:auto;flex:0 0 auto;background:#161616;color:#aaa;border:1px solid #2a2a2a;border-radius:11px;padding:10px 12px;font-size:12px;min-width:max-content}
+.tabs .inside{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;min-width:0;padding:0 16px}
+.tab{width:100%;min-width:0;min-height:50px;background:#161616;color:#aaa;border:1px solid #2a2a2a;border-radius:12px;padding:9px 5px;font-size:12px;font-weight:750;line-height:1.15;white-space:normal;display:flex;align-items:center;justify-content:center;text-align:center}
 .tab.active{background:var(--gold2);color:#111}
+.tab-inventario{color:#aaa}
+.tab-inventario.active{border-color:var(--gold2)}
+@media(max-width:380px){.tabs .inside{gap:6px}.tab{min-height:46px;padding:8px 3px;font-size:10px}}
 .hide{display:none!important}
 .item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #292929}
 .item:last-child{border-bottom:0}.item strong,.item small{display:block}.item small{color:var(--muted);line-height:1.45}
@@ -111,6 +114,14 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
 #produtos .produto-compacto.produto-recolhido>h2::after{content:'+'}
 #produtos .produto-compacto.produto-recolhido>*:not(h2){display:none!important}
 #produtos .produto-compacto.produto-recolhido{padding-top:14px;padding-bottom:14px}
+/* cmv_por_produto_v1 */
+#cmvProdutos .cmv-produto-filtros{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:end}
+#cmvProdutos .cmv-produto-filtros label{display:block}
+#cmvProdutos .cmv-produto-filtros input,#cmvProdutos .cmv-produto-filtros select{margin-bottom:0}
+#cmvProdutos .cmv-produto-item{align-items:flex-start}
+#cmvProdutos .cmv-produto-valores{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.45}
+#cmvProdutos .cmv-produto-valores b{color:#eee}
+@media(max-width:560px){#cmvProdutos .cmv-produto-filtros{grid-template-columns:1fr}#cmvProdutos .cmv-produto-item{grid-template-columns:1fr}}
 /* estoque_por_categoria_v1 */
 .estoque-cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
 .estoque-cat-btn{appearance:none;text-align:left;background:#101010;color:#fff;border:1px solid #303030;border-radius:13px;padding:11px;cursor:pointer;min-width:0}
@@ -145,6 +156,10 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
 #compras a[href="#compraInsumoCard"]{display:none!important}
 #vendas .secao-atalhos-card,#perdas .secao-atalhos-card,#cozinha .secao-atalhos-card,#bar .secao-atalhos-card,#drinks .secao-atalhos-card,#fechamento .secao-atalhos-card,#materiais .secao-atalhos-card,#conta .secao-atalhos-card{position:sticky;top:calc(64px + env(safe-area-inset-top));z-index:19;padding:10px}
 .secao-atalhos-card h2{margin:0 0 8px}.secao-atalhos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.secao-atalhos .btn{width:100%;margin:0;padding:9px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.secao-compacto{scroll-margin-top:118px}.secao-compacto>h2{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0}.secao-compacto>h2::after{content:'−';font-size:20px;line-height:1;opacity:.8}.secao-compacto.secao-recolhido>h2::after{content:'+'}.secao-compacto.secao-recolhido>*:not(h2){display:none!important}.secao-compacto.secao-recolhido{padding-top:14px;padding-bottom:14px}
+#vBaixaPreview{grid-column:1/-1}
+.balde-misto-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.balde-misto-grid label{display:block}.balde-misto-grid select{margin-bottom:0}
+@media(max-width:560px){.balde-misto-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -168,6 +183,9 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
 <button class="tab" onclick="go('produtos',this)">Produtos</button>
 <button class="tab" onclick="go('vendas',this)">Vendas</button>
 <button class="tab" onclick="go('compras',this)">Compras</button>
+<button class="tab" onclick="go('central',this)">📦 Central</button>
+<button class="tab tab-inventario" onclick="abrirInventarioPrincipal(this)">📋 Inventário</button>
+<button class="tab" onclick="go('cmvProdutos',this)">CMV Produto</button>
 <button class="tab" onclick="go('perdas',this)">Perdas</button>
 <button class="tab" onclick="go('cozinha',this)">Cozinha</button>
 <button class="tab" onclick="go('bar',this)">Bar</button>
@@ -439,7 +457,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <input id="estoqueCatBusca" placeholder="Digite nome ou código..." oninput="renderEstoquePorCategoria()">
     <div class="row">
       <div><label>Setor</label><select id="estoqueCatSetor" onchange="renderEstoquePorCategoria()"><option value="">Todos os setores</option><option value="bar">🍺 Bar</option><option value="drinks">🍹 Drinks</option><option value="cozinha">🍳 Cozinha</option><option value="geral">⚪ Geral</option></select></div>
-      <div><label>Situação</label><select id="estoqueCatStatus" onchange="renderEstoquePorCategoria()"><option value="">Todas</option><option value="normal">🟢 Normal</option><option value="baixo">🟡 Baixo</option><option value="critico">🟠 Crítico</option><option value="zerado">🔴 Zerado</option><option value="sem_minimo">⚪ Sem mínimo</option></select></div>
+      <div><label>Situação</label><select id="estoqueCatStatus" onchange="renderEstoquePorCategoria()"><option value="">Todas</option><option value="normal">🟢 Normal</option><option value="repor">🟡 Repor setor</option><option value="baixo">🟡 Baixo</option><option value="critico">🟠 Comprar</option><option value="zerado">🔴 Zerado total</option><option value="sem_minimo">⚪ Sem mínimo</option></select></div>
     </div>
     <div class="formula"><b>Escolha uma categoria</b><br><span class="muted">Os números consideram apenas produtos ativos. O valor é estoque atual × custo unitário.</span></div>
     <div id="estoqueCatCategorias" class="estoque-cat-grid"></div>
@@ -581,9 +599,21 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
   <div class="sub">Escolha o produto e informe a quantidade. O estoque baixa sozinho.</div>
   <div class="card">
     <h2>🧾 Registrar venda</h2>
-    <label>Buscar produto</label><input id="vBuscaProduto" placeholder="Digite nome ou código..." oninput="filtrarSelectOperacao('v')">
-    <label>Produto</label><select id="vProduto" onchange="previewVenda()"><option>Carregando...</option></select>
-    <label>Quantidade vendida</label><input id="vQtd" type="number" step="0.001" min="0.001" value="1" oninput="previewVenda()">
+    <label>Formato da venda</label>
+    <select id="vFormato" onchange="atualizarFormatoVenda()">
+      <option value="unidade">🍺 Unidade normal</option>
+      <option value="balde">🪣 Balde da mesma cerveja · 5 long necks</option>
+      <option value="misto">🪣 Balde misto · escolha 5 long necks</option>
+    </select>
+    <div id="vProdutoBox">
+      <label>Buscar produto</label><input id="vBuscaProduto" placeholder="Digite nome ou código..." oninput="filtrarSelectOperacao('v')">
+      <label id="vProdutoLabel">Produto</label><select id="vProduto" onchange="previewVenda()"><option>Carregando...</option></select>
+    </div>
+    <div id="vMistoBox" class="hide">
+      <div class="notice"><b>Monte o balde misto.</b><br>Escolha as cinco long necks. O preço será a soma dos preços das unidades e cada cerveja será baixada do Bar.</div>
+      <div id="vMistoSeletores" class="balde-misto-grid" style="margin-top:10px"></div>
+    </div>
+    <label id="vQtdLabel">Quantidade vendida</label><input id="vQtd" type="number" step="0.001" min="0.001" value="1" oninput="previewVenda()">
     <label>📅 Data da venda</label><input id="vDataVenda" type="date" onchange="atualizarVendaRetroativaUI()">
     <div class="sub">Informe o dia em que a venda realmente aconteceu. Venda em data anterior fica registrada como lançamento retroativo.</div>
     <div id="vRetroBox" class="hide" style="margin-top:12px;padding:12px;border:1px solid #4a3d1d;border-radius:14px;background:#17140d">
@@ -597,10 +627,11 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
       <label>Motivo / observação</label><input id="vMotivoRetroativo" placeholder="Ex.: venda de domingo lançada na segunda-feira">
     </div>
     <div class="preview">
-      <div><span>Preço unitário</span><b id="vPreco">R$ 0,00</b></div>
-      <div><span>Estoque atual</span><b id="vEstoque">0</b></div>
+      <div><span id="vPrecoLabel">Preço unitário</span><b id="vPreco">R$ 0,00</b></div>
+      <div><span id="vEstoqueLabel">Estoque atual</span><b id="vEstoque">0</b></div>
       <div><span>Faturamento</span><b id="vReceita">R$ 0,00</b></div>
       <div><span>CMV da venda</span><b id="vCmv">R$ 0,00</b></div>
+      <div id="vBaixaPreview"><span>Baixa do estoque do Bar</span><b style="font-size:14px">Escolha o produto.</b></div>
     </div>
     <button id="btnVenda" class="btn" onclick="registrarVenda()">Registrar venda</button><div id="vendaMsg"></div>
   </div>
@@ -708,6 +739,31 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <div class="sub">Compara os preços das compras de produtos e insumos registradas no mês.</div>
     <div id="rankingFornecedores" class="muted">Registre compras com fornecedor para formar o ranking.</div>
     <div class="formula" style="margin-top:10px"><b>🔎 Melhor fornecedor para o produto selecionado</b><div id="rankingProduto" class="muted" style="margin-top:6px">Selecione um produto acima.</div></div>
+  </div>
+</section>
+
+<section id="central" class="section hide">
+  <div class="title">📦 Estoque Central</div>
+  <div class="sub">Veja em um só lugar o que está guardado no Central, o que está nos setores e o total físico do Buteco.</div>
+  <div class="grid">
+    <div class="metric"><span>Produtos no Central</span><b id="ecProdutos">0</b></div>
+    <div class="metric"><span>Valor no Central</span><b id="ecValorCentral">R$ 0,00</b></div>
+    <div class="metric"><span>Valor nos setores</span><b id="ecValorSetores">R$ 0,00</b></div>
+    <div class="metric"><span>Total físico</span><b id="ecValorTotal">R$ 0,00</b></div>
+    <div class="metric"><span>Reposições internas</span><b id="ecReposicoes">0</b></div>
+    <div class="metric"><span>Realmente zerados</span><b id="ecZerados">0</b></div>
+  </div>
+  <div class="card">
+    <h2>🔎 Consultar estoque completo</h2>
+    <label>Buscar produto</label>
+    <input id="ecBusca" placeholder="Digite nome ou código..." oninput="renderEstoqueCentral()">
+    <div class="row">
+      <div><label>Setor</label><select id="ecSetor" onchange="renderEstoqueCentral()"><option value="">Todos</option><option value="bar">🍺 Bar</option><option value="cozinha">🍳 Cozinha</option><option value="drinks">🍹 Drinks</option><option value="geral">⚪ Geral</option></select></div>
+      <div><label>Situação</label><select id="ecStatus" onchange="renderEstoqueCentral()"><option value="">Todas</option><option value="repor">🟡 Repor setor</option><option value="zerado">🔴 Zerado total</option><option value="com_saldo">🟢 Com saldo</option></select></div>
+    </div>
+    <div class="notice">O total físico é Central + setor. Produto com saldo no Central nunca deve aparecer como zerado.</div>
+    <div id="ecResumo" class="formula" style="margin-top:10px">Carregando estoque...</div>
+    <div id="ecLista" class="muted" style="margin-top:10px">Carregando produtos...</div>
   </div>
 </section>
 
@@ -941,7 +997,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
 
   <div class="card">
     <h2>🥕 Insumos da cozinha</h2>
-    <div class="sub">Consulta de estoque e custo dos ingredientes. A gestão também pode cadastrar um novo insumo daqui.</div>
+    <div class="sub">Consulta de estoque e custo dos ingredientes. Alterações continuam com a gestão.</div>
     <button id="btnNovoInsumoCozinha" type="button" class="btn secondary hide" onclick="abrirNovoInsumoCozinha()">➕ Novo insumo</button>
     <div id="czListaInsumos" class="muted" style="margin-top:10px">Carregando...</div>
   </div>
@@ -1364,7 +1420,44 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <div id="fiStatus" class="formula" style="margin-top:10px"><b>⚪ AGUARDANDO</b><br>Preencha os dados ou toque em Preencher automaticamente.</div>
     <button class="btn" onclick="salvarFechamento()" style="margin-top:12px">✅ Salvar fechamento conferido</button><div id="fechamentoMsg"></div>
   </div>
+  <div class="card" id="protecaoPeriodoCard">
+    <h2>🔐 Proteção dos períodos</h2>
+    <div class="sub">Quando um fechamento é salvo, cada data do período fica bloqueada para novas vendas. Para corrigir um dia fechado, o administrador precisa reabri-lo com motivo registrado na auditoria.</div>
+    <label style="display:block;margin-top:12px">Data para conferir</label><input id="fpData" type="date" onchange="loadProtecaoPeriodos()">
+    <div id="fpStatus" class="formula" style="margin-top:10px"><b>⚪ VERIFICANDO</b><br>Escolha uma data.</div>
+    <div id="fpReabrirBox" class="hide" style="margin-top:10px">
+      <label>Motivo obrigatório da reabertura</label><input id="fpMotivo" placeholder="Ex.: venda de domingo descoberta na segunda-feira">
+      <button class="btn secondary" style="margin-top:8px" onclick="reabrirDiaCmv()">🔓 Reabrir esta data</button><div id="fpMsg"></div>
+    </div>
+    <div style="margin-top:14px"><strong>Últimos dias protegidos</strong></div>
+    <div id="fpRecentes" class="muted" style="margin-top:8px">Nenhum período fechado ainda.</div>
+  </div>
   <div class="card"><h2>Últimos fechamentos</h2><div id="listaFechamentos" class="muted">Nenhum fechamento ainda.</div></div>
+</section>
+
+<section id="cmvProdutos" class="section hide">
+  <div class="title">CMV por Produto</div>
+  <div class="sub">Custo, preço, lucro e CMV de cada produto. Os piores resultados aparecem primeiro.</div>
+  <div id="cmvProdutosMsg"></div>
+
+  <div class="preview">
+    <div><span>Produtos analisados</span><b id="cmvProdTotal">0</b></div>
+    <div><span>🟢 Bom</span><b id="cmvProdBom">0</b></div>
+    <div><span>🟡 Atenção</span><b id="cmvProdAtencao">0</b></div>
+    <div><span>🔴 Crítico</span><b id="cmvProdCritico">0</b></div>
+    <div><span>⚪ Sem cálculo</span><b id="cmvProdSemCusto">0</b></div>
+  </div>
+
+  <div class="card">
+    <h2>🔎 Lista completa</h2>
+    <div class="cmv-produto-filtros">
+      <label>Buscar produto<input id="cmvProdBusca" placeholder="Nome ou código..." oninput="filtrarCmvProdutos()"></label>
+      <label>Setor<select id="cmvProdSetor" onchange="filtrarCmvProdutos()"><option value="">Todos</option></select></label>
+      <label>Situação<select id="cmvProdStatus" onchange="filtrarCmvProdutos()"><option value="">Todas</option><option value="critico">🔴 Crítico</option><option value="atencao">🟡 Atenção</option><option value="bom">🟢 Bom</option><option value="sem_calculo">⚪ Sem cálculo</option></select></label>
+    </div>
+    <div class="formula" style="margin-top:10px"><b>👑 Leitura rápida</b><br>CMV = custo do produto ÷ preço de venda. A meta usada é a da categoria cadastrada.</div>
+    <div id="cmvProdutosLista" class="muted" style="margin-top:10px">Carregando produtos...</div>
+  </div>
 </section>
 
 <section id="materiais" class="section hide">
@@ -1664,7 +1757,10 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
 const BASE='https://lfxrpjqpyzmbniimctzt.supabase.co';
 const KEY='sb_publishable_BBYqd50N3CimOllgk2ceEg_8KdsPN7X';
 let produtosVenda=[];
+let produtosBalde=[];
 let produtosLista=[];
+let cmvProdutosLista=[];
+let cmvProdutosInteligencia=new Map();
 let sugestoesMinimo=[];
 let produtosPerda=[];
 let planosPerdasCache={};
@@ -2332,8 +2428,10 @@ function go(id,b){
   }
   document.querySelectorAll('.section').forEach(x=>x.classList.add('hide'));$(id).classList.remove('hide');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));if(b){b.classList.add('active');b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
   if(id==='produtos'){loadProdutos();loadAjustes();loadInsumos();loadFichaOpcoes()}
+  if(id==='cmvProdutos')loadCmvProdutos();
   if(id==='vendas'){loadProdutosVenda();loadVendas()}
   if(id==='compras'){Promise.all([loadProdutosVenda(),loadInsumosCompra()]).then(()=>{loadRankingFornecedores();loadPedidoCompra();loadSolicitacoesAprovadasCozinhaCompra();loadSolicitacoesAprovadasBarCompra()});loadCompras()}
+  if(id==='central')loadEstoqueCentral();
   if(id==='materiais')loadMateriaisCadastrados().then(()=>{
     preencherOcorrenciaMaterial();
     if(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador'){
@@ -2344,9 +2442,17 @@ function go(id,b){
   if(id==='cozinha')loadCozinha();
   if(id==='bar')loadBar();
   if(id==='drinks')loadDrinks();
-  if(id==='fechamento'){loadFechamentos();loadMarcoZero();loadContagemRapidaOpcoes();loadHistoricoContagemRapida();loadCentralDivergenciasEstoque()}
+  if(id==='fechamento'){loadFechamentos();loadProtecaoPeriodos();loadMarcoZero();loadContagemRapidaOpcoes();loadHistoricoContagemRapida();loadCentralDivergenciasEstoque()}
   if(id==='home')loadDashboard();if(id==='conta')loadConta()
   if(SECOES_COMPACTAS.includes(id))setTimeout(()=>prepararSecaoCompacta(id),80);
+}
+
+function abrirInventarioPrincipal(botao){
+  go('fechamento',botao);
+  setTimeout(()=>{
+    prepararSecaoCompacta('fechamento');
+    abrirJanelaSecao('fechamento','marcoZeroCard',true);
+  },180);
 }
 
 
@@ -2605,9 +2711,9 @@ async function loadCozinha(){
     previewSolicitacaoInsumoCozinha();
     renderAjusteFisicoCozinhaSelect();
     const gestao=perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador';
+    if($('btnNovoInsumoCozinha'))$('btnNovoInsumoCozinha').classList.toggle('hide',!gestao);
     if($('czTransferCard'))$('czTransferCard').classList.toggle('hide',!gestao);
     if($('czAjusteFisicoCard'))$('czAjusteFisicoCard').classList.toggle('hide',!gestao);
-    if($('btnNovoInsumoCozinha'))$('btnNovoInsumoCozinha').classList.toggle('hide',!gestao);
     $('czListaSolicitacoes').innerHTML=sol&&sol.length?sol.map(s=>{
       const dt=dataHoraApp(s.created_at);
       const botoes=gestao&&s.status==='PENDENTE'?`<div class="actions"><button class="btn small" onclick="decidirSolicitacaoCozinha('${s.id}','APROVADA')">Aprovar</button><button class="btn small danger" onclick="decidirSolicitacaoCozinha('${s.id}','RECUSADA')">Recusar</button></div>`:'';
@@ -3266,10 +3372,15 @@ async function addProduto(){
   const b=$('btnSalvarProduto');if(b){b.disabled=true;b.textContent='Salvando...'}
   try{
     await json(await api('/rest/v1/produtos',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(row)}));
-    msg('produtoMsg','Produto salvo. Para comprar ou repor mercadoria, use a aba Compras.');
     $('pNome').value='';$('pCategoria').value='';$('pNovaCategoria').value='';$('pNovoSetor').value='cozinha';$('pCusto').value='';$('pVenda').value='';$('pEstoque').value='0';$('pMin').value='';atualizarCategoriaProdutoCadastro();
-    await Promise.all([loadProdutos(),loadProdutosVenda(),loadDashboard(),loadDrinks()])
-  }catch(e){msg('produtoMsg',friendly(e),true)}finally{if(b){b.disabled=false;b.textContent='Salvar produto'}}
+    msg('produtoMsg','Produto salvo com sucesso. Para comprar ou repor mercadoria, use a aba Compras.');
+  }catch(e){
+    msg('produtoMsg',friendly(e),true);
+    return
+  }finally{if(b){b.disabled=false;b.textContent='Salvar produto'}}
+  const recargas=await Promise.allSettled([loadProdutos(),loadProdutosVenda(),loadDashboard(),loadDrinks()]);
+  const falhas=recargas.filter(r=>r.status==='rejected');
+  if(falhas.length)console.warn('[cadastro-produto] Produto salvo; atualização parcial da tela.',falhas.map(r=>String(r.reason?.message||r.reason)))
 }
 function abrirNovoInsumoCozinha(){
   const tab=[...document.querySelectorAll('.tab')].find(x=>(x.getAttribute('onclick')||'').includes("go('produtos'"));
@@ -3406,14 +3517,15 @@ async function removerFichaItem(id){
 
 async function loadProdutos(){
   try{
-    const [lista,intel,giroMinimos]=await Promise.all([
+    const [lista,intel,giroMinimos,saldos]=await Promise.all([
       json(await api('/rest/v1/vw_produtos_cmv?select=*&ativo=eq.true&order=nome.asc')),
       json(await api('/rest/v1/rpc/preco_inteligente_produtos',{method:'POST',body:JSON.stringify({p_inicio:fmt(first),p_fim:fmt(d)})})),
       json(await api('/rest/v1/rpc/pedido_compra_sugerido',{method:'POST',body:JSON.stringify({p_dias_cobertura:7})})),
-      json(await api('/rest/v1/insumos?select=id,custo_unitario,estoque_atual,estoque_central&ativo=eq.true'))
+      json(await api('/rest/v1/produtos?select=id,estoque_atual,estoque_central&ativo=eq.true'))
     ]);
     const imap=Object.fromEntries((intel||[]).map(i=>[i.produto_id,i]));
-    produtosLista=lista||[];
+    const saldosMap=Object.fromEntries((saldos||[]).map(x=>[x.id,x]));
+    produtosLista=(lista||[]).map(p=>Object.assign({},p,{estoque_atual:Number(saldosMap[p.id]?.estoque_atual??p.estoque_atual??0),estoque_central:Number(saldosMap[p.id]?.estoque_central??p.estoque_central??0)}));
     sugestoesMinimo=giroMinimos||[];
     montarCategoriasCadastroProduto();
     $('listaProdutos').innerHTML=produtosLista.length?produtosLista.map(p=>{
@@ -3458,6 +3570,75 @@ async function loadProdutos(){
     renderMinimosEmLote();
     renderRevisaoMinimos();
   }catch(e){$('listaProdutos').textContent=friendly(e)}
+}
+function setorCmvProduto(p){
+  return String(p?.setor||setorProdutoLocal(p?.categoria)||'geral').toLowerCase();
+}
+function setorCmvProdutoTexto(setor){
+  return setor==='drinks'?'🍹 Drinks':setor==='bar'?'🍺 Bar':setor==='cozinha'?'🍳 Cozinha':'⚪ Geral';
+}
+function dadosCmvProduto(p){
+  const custo=Number(p?.custo_unitario||0),preco=Number(p?.preco_venda||0);
+  const inteligencia=cmvProdutosInteligencia.get(p?.id)||{};
+  const metaMin=Number(inteligencia.meta_min||28),metaMax=Number(inteligencia.meta_max||28);
+  const calculado=custo>0&&preco>0;
+  const cmv=calculado?Number(p?.cmv_percentual||(custo/preco)*100):0;
+  let status='bom',rotulo='🟢 BOM',classe='';
+  if(!calculado){status='sem_calculo';rotulo='⚪ SEM CÁLCULO';classe='warn'}
+  else if(cmv>metaMax+5){status='critico';rotulo='🔴 CRÍTICO';classe='danger'}
+  else if(cmv>metaMax){status='atencao';rotulo='🟡 ATENÇÃO';classe='warn'}
+  return {custo,preco,cmv,calculado,metaMin,metaMax,status,rotulo,classe,setor:setorCmvProduto(p)};
+}
+function montarSetoresCmvProdutos(){
+  const sel=$('cmvProdSetor');if(!sel)return;
+  const atual=sel.value;
+  const setores=[...new Set((cmvProdutosLista||[]).map(setorCmvProduto))].sort((a,b)=>setorCmvProdutoTexto(a).localeCompare(setorCmvProdutoTexto(b),'pt-BR'));
+  sel.innerHTML='<option value="">Todos</option>'+setores.map(s=>'<option value="'+esc(s)+'">'+setorCmvProdutoTexto(s)+'</option>').join('');
+  if(setores.includes(atual))sel.value=atual;
+}
+function atualizarResumoCmvProdutos(){
+  const dados=(cmvProdutosLista||[]).map(dadosCmvProduto);
+  if($('cmvProdTotal'))$('cmvProdTotal').textContent=dados.length.toLocaleString('pt-BR');
+  if($('cmvProdBom'))$('cmvProdBom').textContent=dados.filter(x=>x.status==='bom').length.toLocaleString('pt-BR');
+  if($('cmvProdAtencao'))$('cmvProdAtencao').textContent=dados.filter(x=>x.status==='atencao').length.toLocaleString('pt-BR');
+  if($('cmvProdCritico'))$('cmvProdCritico').textContent=dados.filter(x=>x.status==='critico').length.toLocaleString('pt-BR');
+  if($('cmvProdSemCusto'))$('cmvProdSemCusto').textContent=dados.filter(x=>x.status==='sem_calculo').length.toLocaleString('pt-BR');
+}
+function filtrarCmvProdutos(){
+  const box=$('cmvProdutosLista');if(!box)return;
+  const busca=normalizarBusca($('cmvProdBusca')?.value||'').trim();
+  const setor=$('cmvProdSetor')?.value||'',status=$('cmvProdStatus')?.value||'';
+  const ordem={critico:1,atencao:2,sem_calculo:3,bom:4};
+  const lista=(cmvProdutosLista||[]).map(p=>({p,d:dadosCmvProduto(p)})).filter(x=>{
+    const texto=normalizarBusca((x.p.codigo||'')+' '+(x.p.nome||'')+' '+(x.p.categoria||''));
+    return (!busca||texto.includes(busca))&&(!setor||x.d.setor===setor)&&(!status||x.d.status===status);
+  }).sort((a,b)=>(ordem[a.d.status]-ordem[b.d.status])||(b.d.cmv-a.d.cmv)||String(a.p.nome||'').localeCompare(String(b.p.nome||''),'pt-BR'));
+  if(!lista.length){box.innerHTML='<div class="formula">Nenhum produto encontrado com esses filtros.</div>';return}
+  box.innerHTML=lista.map(({p,d})=>{
+    const categoria=p.categoria||'Sem categoria';
+    const cmvBloco=d.calculado?'<div class="produto-cmv-atual"><span>CMV do produto</span><b>'+pct(d.cmv)+'</b></div>':'<div class="produto-cmv-atual indisponivel"><span>CMV do produto</span><b>Cadastre custo e preço</b></div>';
+    const lucro=d.calculado?money(lucroUnitario(d.preco,d.custo)):'--';
+    const margem=d.calculado?pct(margemBruta(d.preco,d.custo)):'--';
+    return '<div class="item cmv-produto-item"><div><strong>'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome||'Produto')+'</strong><small>'+esc(categoria)+' · '+setorCmvProdutoTexto(d.setor)+'</small>'+cmvBloco+'<div class="cmv-produto-valores"><span>Custo <b>'+money(d.custo)+'</b></span><span>Venda <b>'+money(d.preco)+'</b></span><span>Lucro bruto <b>'+lucro+'</b></span><span>Margem <b>'+margem+'</b></span></div><small>Meta da categoria: '+pct(d.metaMin)+' a '+pct(d.metaMax)+'</small></div><div class="pill '+d.classe+'">'+d.rotulo+'</div></div>';
+  }).join('');
+}
+async function loadCmvProdutos(){
+  const box=$('cmvProdutosLista');if(box)box.textContent='Carregando produtos...';
+  if($('cmvProdutosMsg'))$('cmvProdutosMsg').innerHTML='';
+  try{
+    const [lista,inteligencia]=await Promise.all([
+      json(await api('/rest/v1/vw_produtos_cmv?select=*&ativo=eq.true&order=nome.asc')),
+      json(await api('/rest/v1/rpc/preco_inteligente_produtos',{method:'POST',body:JSON.stringify({p_inicio:fmt(first),p_fim:fmt(d)})}))
+    ]);
+    cmvProdutosLista=lista||[];
+    cmvProdutosInteligencia=new Map((inteligencia||[]).map(x=>[x.produto_id,x]));
+    montarSetoresCmvProdutos();
+    atualizarResumoCmvProdutos();
+    filtrarCmvProdutos();
+  }catch(e){
+    if(box)box.textContent='Não foi possível carregar a lista agora.';
+    msg('cmvProdutosMsg',friendly(e),true);
+  }
 }
 function renderMinimosEmLote(){
   const box=$('minimosLoteLista'),resumo=$('minimosLoteResumo'),btn=$('btnSalvarMinimosLote'),btnSug=$('btnPreencherSugestoesMinimo');if(!box)return;
@@ -3664,13 +3845,14 @@ function restaurarJanelaProdutos(){
 setTimeout(restaurarJanelaProdutos,0);
 let estoqueCategoriaSelecionada='';
 function dadosEstoqueCategoria(p){
-  const estoque=Number(p.estoque_atual||0),minimo=Number(p.estoque_minimo||0),semMinimo=minimo<=0;
+  const setor=Number(p.estoque_atual||0),central=Number(p.estoque_central||0),estoque=setor+central,minimo=Number(p.estoque_minimo||0),semMinimo=minimo<=0;
   let chave='normal',rotulo='🟢 NORMAL',classe='';
-  if(estoque<=0){chave='zerado';rotulo='🔴 ZERADO';classe='danger'}
+  if(estoque<=0){chave='zerado';rotulo='🔴 ZERADO TOTAL';classe='danger'}
+  else if(setor<=0&&central>0){chave='repor';rotulo='🟡 REPOR SETOR';classe='warn'}
   else if(semMinimo){chave='sem_minimo';rotulo='⚪ SEM MÍNIMO';classe='warn'}
-  else if(estoque<=minimo){chave='critico';rotulo='🟠 CRÍTICO';classe='danger'}
+  else if(estoque<=minimo){chave='critico';rotulo='🟠 COMPRAR';classe='danger'}
   else if(estoque<=minimo*1.5){chave='baixo';rotulo='🟡 BAIXO';classe='warn'}
-  return {estoque,minimo,semMinimo,chave,rotulo,classe,atencao:chave!=='normal'||semMinimo,valor:Math.max(0,estoque)*Number(p.custo_unitario||0)};
+  return {estoque,setor,central,minimo,semMinimo,chave,rotulo,classe,atencao:chave!=='normal'||semMinimo,valor:Math.max(0,estoque)*Number(p.custo_unitario||0)};
 }
 function selecionarEstoqueCategoria(categoria){
   estoqueCategoriaSelecionada=String(categoria||'');
@@ -3711,7 +3893,7 @@ function renderEstoquePorCategoria(){
   listaBox.innerHTML=itens.length?itens.map(p=>{
     const d=dadosEstoqueCategoria(p),un=esc(p.unidade||'un'),cat=esc(p.categoria||'Sem categoria'),setorAtual=p.setor||setorProdutoLocal(p.categoria),setorNome=setorAtual==='drinks'?'🍹 Drinks':setorAtual==='bar'?'🍺 Bar':setorAtual==='cozinha'?'🍳 Cozinha':'⚪ Geral';
     const aviso=d.semMinimo?' · mínimo não definido':' · mínimo '+d.minimo.toLocaleString('pt-BR')+' '+un;
-    return '<div class="item estoque-cat-produto"><div><strong>'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome)+'</strong><small>'+cat+' · '+setorNome+'</small><small>Valor em estoque '+money(d.valor)+' · custo '+money(p.custo_unitario||0)+'</small><div class="actions"><button class="btn small secondary" data-id="'+p.id+'" onclick="abrirEditar(this.dataset.id)">Editar</button><button class="btn small secondary" data-id="'+p.id+'" onclick="abrirAjuste(this.dataset.id)">Ajustar estoque</button></div></div><div class="status-stack"><div class="estoque-qtd">'+d.estoque.toLocaleString('pt-BR')+' '+un+'</div><div class="pill '+d.classe+'">'+d.rotulo+'</div><small class="muted">'+aviso.replace(/^ · /,'')+'</small></div></div>';
+    return '<div class="item estoque-cat-produto"><div><strong>'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome)+'</strong><small>'+cat+' · '+setorNome+'</small><small>📦 Central '+d.central.toLocaleString('pt-BR')+' '+un+' · '+setorNome+' '+d.setor.toLocaleString('pt-BR')+' '+un+' · 👑 Total '+d.estoque.toLocaleString('pt-BR')+' '+un+'</small><small>Valor total '+money(d.valor)+' · custo '+money(p.custo_unitario||0)+'</small><div class="actions"><button class="btn small secondary" data-id="'+p.id+'" onclick="abrirEditar(this.dataset.id)">Editar</button><button class="btn small secondary" data-id="'+p.id+'" onclick="abrirAjuste(this.dataset.id)">Ajustar setor</button></div></div><div class="status-stack"><div class="estoque-qtd">'+d.estoque.toLocaleString('pt-BR')+' '+un+'</div><div class="pill '+d.classe+'">'+d.rotulo+'</div><small class="muted">'+aviso.replace(/^ · /,'')+'</small></div></div>';
   }).join(''):'<div class="formula">Nenhum produto encontrado. Limpe a busca ou escolha outra situação.</div>';
 }
 function montarCategoriasContagem(){
@@ -3905,8 +4087,9 @@ async function loadAjustes(){
 }
 
 function filtrarSelectOperacao(tipo){
+  const formato=$('vFormato')?.value||'unidade';
   const cfg={
-    v:{busca:'vBuscaProduto',select:'vProduto',lista:produtosVenda},
+    v:{busca:'vBuscaProduto',select:'vProduto',lista:formato==='balde'?produtosBalde:produtosVenda},
     c:{busca:'cBuscaProduto',select:'cProduto',lista:produtosVenda},
     pe:{busca:'peBuscaProduto',select:'peProduto',lista:produtosPerda}
   }[tipo];
@@ -3926,19 +4109,75 @@ async function loadProdutosVenda(){
   atualizarVendaRetroativaUI();
   try{
     const v=$('vProduto'),c=$('cProduto');const atualV=v?v.value:'',atualC=c?c.value:'';
-    produtosVenda=await json(await api('/rest/v1/produtos?select=id,codigo,nome,custo_unitario,preco_venda,estoque_atual,estoque_minimo,estoque_central,setor&ativo=eq.true&order=nome.asc'));
+    produtosVenda=await json(await api('/rest/v1/produtos?select=id,codigo,nome,categoria,unidade,custo_unitario,preco_venda,estoque_atual,estoque_minimo,estoque_central,setor,vende_em_balde&ativo=eq.true&order=nome.asc'));
+    produtosBalde=produtosVenda.filter(p=>p.vende_em_balde===true&&Number(p.preco_venda||0)>0&&Number(p.custo_unitario||0)>0);
     const optsCompra='<option value="">Escolha um produto</option>'+produtosVenda.map(p=>'<option value="'+p.id+'">'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome)+'</option>').join('');
     const produtosVendaveis=produtosVenda.filter(p=>Number(p.preco_venda||0)>0);
-    const optsVenda='<option value="">Escolha um produto</option>'+produtosVendaveis.map(p=>'<option value="'+p.id+'">'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome)+'</option>').join('');
-    if(v){v.innerHTML=optsVenda;if(produtosVendaveis.some(p=>p.id===atualV))v.value=atualV}
+    const listaVenda=($('vFormato')?.value||'unidade')==='balde'?produtosBalde:produtosVendaveis;
+    const optsVenda='<option value="">Escolha um produto</option>'+listaVenda.map(p=>'<option value="'+p.id+'">'+(p.codigo?esc(p.codigo)+' · ':'')+esc(p.nome)+'</option>').join('');
+    if(v){v.innerHTML=optsVenda;if(listaVenda.some(p=>p.id===atualV))v.value=atualV}
     if(c){c.innerHTML=optsCompra;if(produtosVenda.some(p=>p.id===atualC))c.value=atualC}
-    if($('vBuscaProduto')?.value.trim())filtrarSelectOperacao('v');else previewVenda();
+    montarSeletoresBaldeMisto();
+    if($('vBuscaProduto')?.value.trim())filtrarSelectOperacao('v');else atualizarFormatoVenda(false);
     if($('cBuscaProduto')?.value.trim())filtrarSelectOperacao('c');else previewCompra();
   }catch(e){}
 }
+function montarSeletoresBaldeMisto(){
+  const box=$('vMistoSeletores');if(!box)return;
+  const anteriores=[...box.querySelectorAll('select')].map(x=>x.value);
+  const opcoes='<option value="">Escolha uma long neck</option>'+produtosBalde.map(p=>'<option value="'+p.id+'">'+esc(p.nome)+' · '+money(p.preco_venda)+' · estoque '+Number(p.estoque_atual||0).toLocaleString('pt-BR')+'</option>').join('');
+  box.innerHTML=[1,2,3,4,5].map((n,i)=>'<label>Long neck '+n+'<select class="vMistoItem" onchange="previewVenda()">'+opcoes+'</select></label>').join('');
+  [...box.querySelectorAll('select')].forEach((x,i)=>{if(anteriores[i]&&produtosBalde.some(p=>p.id===anteriores[i]))x.value=anteriores[i]});
+}
+function atualizarFormatoVenda(remontar=true){
+  const formato=$('vFormato')?.value||'unidade',balde=formato!=='unidade',misto=formato==='misto';
+  $('vProdutoBox')?.classList.toggle('hide',misto);$('vMistoBox')?.classList.toggle('hide',!misto);
+  if($('vQtdLabel'))$('vQtdLabel').textContent=balde?'Quantidade de baldes':'Quantidade vendida';
+  if($('vProdutoLabel'))$('vProdutoLabel').textContent=formato==='balde'?'Cerveja do balde':'Produto';
+  if($('vPrecoLabel'))$('vPrecoLabel').textContent=balde?'Preço por balde':'Preço unitário';
+  if($('vEstoqueLabel'))$('vEstoqueLabel').textContent=balde?'Baldes possíveis':'Estoque atual';
+  if($('vQtd')){$('vQtd').step=balde?'1':'0.001';$('vQtd').min=balde?'1':'0.001';if(balde&&(!Number.isInteger(Number($('vQtd').value))||Number($('vQtd').value)<1))$('vQtd').value='1'}
+  if(remontar&&formato==='balde'){if($('vBuscaProduto'))$('vBuscaProduto').value='';filtrarSelectOperacao('v')}
+  if(remontar&&misto)montarSeletoresBaldeMisto();
+  previewVenda();
+}
+function composicaoBalde(){
+  const formato=$('vFormato')?.value||'unidade';
+  if(formato==='balde'){
+    const p=produtosBalde.find(x=>x.id===$('vProduto')?.value);return p?[{produto:p,quantidade:5}]:[];
+  }
+  if(formato==='misto'){
+    const ids=[...document.querySelectorAll('.vMistoItem')].map(x=>x.value).filter(Boolean),map=new Map();
+    ids.forEach(id=>map.set(id,(map.get(id)||0)+1));
+    return [...map].map(([id,quantidade])=>({produto:produtosBalde.find(x=>x.id===id),quantidade})).filter(x=>x.produto);
+  }
+  return [];
+}
 function previewVenda(){
-  const v=$('vProduto');if(!v)return;const p=produtosVenda.find(x=>x.id===v.value),q=Number($('vQtd').value||0);
-  $('vPreco').textContent=money(p?.preco_venda||0);$('vEstoque').textContent=p?Number(p.estoque_atual).toLocaleString('pt-BR'):'0';$('vReceita').textContent=money(p?Number(p.preco_venda)*q:0);$('vCmv').textContent=money(p?Number(p.custo_unitario)*q:0)
+  const v=$('vProduto');if(!v)return;const formato=$('vFormato')?.value||'unidade',q=Number($('vQtd')?.value||0),baixa=$('vBaixaPreview');
+  if(formato==='unidade'){
+    const p=produtosVenda.find(x=>x.id===v.value);
+    $('vPreco').textContent=money(p?.preco_venda||0);$('vEstoque').textContent=p?Number(p.estoque_atual).toLocaleString('pt-BR'):'0';$('vReceita').textContent=money(p?Number(p.preco_venda)*q:0);$('vCmv').textContent=money(p?Number(p.custo_unitario)*q:0);
+    if(baixa)baixa.innerHTML='<span>Baixa do estoque do Bar</span><b style="font-size:14px">'+(p?esc(p.nome)+': '+Number(p.estoque_atual||0).toLocaleString('pt-BR')+' → '+(Number(p.estoque_atual||0)-q).toLocaleString('pt-BR'):'Escolha o produto.')+'</b>';
+    return
+  }
+  const composicao=composicaoBalde(),selecionadas=composicao.reduce((a,x)=>a+Number(x.quantidade||0),0),baldes=Number.isInteger(q)&&q>0?q:0;
+  if(selecionadas!==5||!baldes){$('vPreco').textContent=money(0);$('vEstoque').textContent='0';$('vReceita').textContent=money(0);$('vCmv').textContent=money(0);if(baixa)baixa.innerHTML='<span>Baixa do estoque do Bar</span><b style="font-size:14px">'+(formato==='misto'?'Escolha as cinco long necks.':'Escolha a cerveja do balde.')+'</b>';return}
+  const precoBalde=composicao.reduce((a,x)=>a+Number(x.produto.preco_venda||0)*x.quantidade,0),custoBalde=composicao.reduce((a,x)=>a+Number(x.produto.custo_unitario||0)*x.quantidade,0),possiveis=Math.min(...composicao.map(x=>Math.floor(Number(x.produto.estoque_atual||0)/x.quantidade)));
+  $('vPreco').textContent=money(precoBalde);$('vEstoque').textContent=possiveis.toLocaleString('pt-BR');$('vReceita').textContent=money(precoBalde*baldes);$('vCmv').textContent=money(custoBalde*baldes);
+  if(baixa)baixa.innerHTML='<span>Baixa do estoque do Bar</span><b style="font-size:14px">'+composicao.map(x=>{const atual=Number(x.produto.estoque_atual||0),sai=x.quantidade*baldes;return esc(x.produto.nome)+': '+atual.toLocaleString('pt-BR')+' → '+(atual-sai).toLocaleString('pt-BR')+' ('+sai.toLocaleString('pt-BR')+' un)'}).join('<br>')+'</b>'
+}
+let vendaDataFechada=false,vendaDataCheckSeq=0;
+async function verificarDataVendaFechada(){
+  const campo=$('vDataVenda'),data=campo?.value||dataHojeApp(),seq=++vendaDataCheckSeq;if(!campo)return false;
+  try{
+    const r=await json(await api('/rest/v1/periodos_operacionais_cmv?select=status&data_operacional=eq.'+encodeURIComponent(data)+'&limit=1'));
+    if(seq!==vendaDataCheckSeq)return vendaDataFechada;
+    vendaDataFechada=!!(r&&r[0]&&r[0].status==='FECHADO');
+    const btn=$('btnVenda');if(btn&&btn.textContent!=='Registrando...')btn.disabled=vendaDataFechada;
+    if(vendaDataFechada)msg('vendaMsg','🔒 '+formatarDataAppCurta(data)+' está fechada. Vá em CMV → Proteção dos períodos e reabra a data com um motivo antes de lançar a venda.',true);
+    return vendaDataFechada;
+  }catch(_e){vendaDataFechada=false;return false}
 }
 function atualizarVendaRetroativaUI(){
   const campo=$('vDataVenda'),box=$('vRetroBox'),hoje=dataHojeApp();if(!campo)return;campo.max=hoje;if(!campo.value)campo.value=hoje;
@@ -3946,22 +4185,34 @@ function atualizarVendaRetroativaUI(){
   if(retro&&perfilAtual?.papel!=='admin'){msg('vendaMsg','Somente o administrador pode lançar venda em data anterior.',true);campo.value=hoje;retro=false}
   if(box)box.classList.toggle('hide',!retro);
   if(!retro){if($('vEstoqueRefletido'))$('vEstoqueRefletido').value='nao';if($('vMotivoRetroativo'))$('vMotivoRetroativo').value=''}
+  verificarDataVendaFechada();
 }
 async function registrarVenda(){
-  const id=$('vProduto').value,q=Number($('vQtd').value||0),hoje=dataHojeApp(),data=$('vDataVenda')?.value||hoje;
-  if(!id||q<=0)return msg('vendaMsg','Escolha o produto e informe a quantidade.',true);
+  const formato=$('vFormato')?.value||'unidade',id=$('vProduto').value,q=Number($('vQtd').value||0),hoje=dataHojeApp(),data=$('vDataVenda')?.value||hoje,balde=formato!=='unidade',composicao=balde?composicaoBalde():[];
+  if(!balde&&(!id||q<=0))return msg('vendaMsg','Escolha o produto e informe a quantidade.',true);
+  if(balde&&(!Number.isInteger(q)||q<=0))return msg('vendaMsg','Informe uma quantidade inteira de baldes.',true);
+  if(balde&&composicao.reduce((a,x)=>a+Number(x.quantidade||0),0)!==5)return msg('vendaMsg',formato==='misto'?'Escolha exatamente as cinco long necks do balde misto.':'Escolha a cerveja do balde.',true);
   if(data>hoje)return msg('vendaMsg','A data da venda não pode ser futura.',true);
+  if(await verificarDataVendaFechada())return;
   const retro=data<hoje,refletido=retro&&$('vEstoqueRefletido')?.value==='sim',motivo=retro?($('vMotivoRetroativo')?.value.trim()||null):null,p=produtosVenda.find(x=>x.id===id);
   if(retro&&perfilAtual?.papel!=='admin')return msg('vendaMsg','Somente o administrador pode lançar venda em data anterior.',true);
   if(retro){
-    const tratamento=refletido?'NÃO vai baixar o estoque novamente, porque você marcou que a saída já foi refletida em contagem/ajuste.':'vai baixar '+q.toLocaleString('pt-BR')+' '+(p?.unidade||'un')+' do estoque agora.';
-    if(!confirm('Registrar '+q.toLocaleString('pt-BR')+' '+(p?.nome||'produto')+' como venda de '+formatarDataAppCurta(data)+'?\n\nO faturamento e o CMV entrarão nessa data. O sistema '+tratamento))return;
+    const unidades=balde?q*5:q,nome=balde?(formato==='misto'?'balde misto':'balde de '+(composicao[0]?.produto?.nome||'long neck')):(p?.nome||'produto'),tratamento=refletido?'NÃO vai baixar o estoque novamente, porque você marcou que a saída já foi refletida em contagem/ajuste.':'vai baixar '+unidades.toLocaleString('pt-BR')+' unidade(s) do estoque agora.';
+    if(!confirm('Registrar '+q.toLocaleString('pt-BR')+' '+nome+' como venda de '+formatarDataAppCurta(data)+'?\n\nO faturamento e o CMV entrarão nessa data. O sistema '+tratamento))return;
   }
   $('btnVenda').disabled=true;$('btnVenda').textContent='Registrando...';
   try{
-    const d=await json(await api('/rest/v1/rpc/registrar_venda_com_data',{method:'POST',body:JSON.stringify({p_produto_id:id,p_quantidade:q,p_data_venda:data,p_estoque_ja_refletido:refletido,p_motivo_retroativo:motivo})}));
-    const dataTxt=formatarDataAppCurta(String(d.data_venda||data).slice(0,10)),baixa=d.estoque_baixado?(d.consumo_ficha?' · ingredientes baixados pela ficha técnica':' · estoque agora '+Number(d.estoque_atual||0).toLocaleString('pt-BR')):' · estoque preservado, sem nova baixa';
-    msg('vendaMsg',(d.lancamento_retroativo?'Venda retroativa registrada em '+dataTxt+': ':'Venda registrada: ')+d.produto+' · '+q.toLocaleString('pt-BR')+' un · faturamento '+money(d.receita)+' · CMV '+money(d.cmv)+baixa+'.');
+    let d;
+    if(balde){
+      const itens=composicao.map(x=>({produto_id:x.produto.id,quantidade:x.quantidade}));
+      d=await json(await api('/rest/v1/rpc/registrar_venda_balde',{method:'POST',body:JSON.stringify({p_itens:itens,p_quantidade_baldes:q,p_data_venda:data,p_estoque_ja_refletido:refletido,p_motivo_retroativo:motivo})}));
+      const baixa=d.estoque_baixado?' · baixa: '+(d.itens||[]).map(x=>x.produto+' '+Number(x.quantidade_total||0).toLocaleString('pt-BR')+' un → saldo '+Number(x.estoque_depois||0).toLocaleString('pt-BR')).join(' · '):' · estoque preservado, sem nova baixa';
+      msg('vendaMsg',(d.lancamento_retroativo?'Venda retroativa registrada: ':'Venda registrada: ')+q.toLocaleString('pt-BR')+' balde(s) · '+Number(d.unidades||q*5).toLocaleString('pt-BR')+' long necks · faturamento '+money(d.receita)+' · CMV '+money(d.cmv)+baixa+'.');
+    }else{
+      d=await json(await api('/rest/v1/rpc/registrar_venda_com_data',{method:'POST',body:JSON.stringify({p_produto_id:id,p_quantidade:q,p_data_venda:data,p_estoque_ja_refletido:refletido,p_motivo_retroativo:motivo})}));
+      const dataTxt=formatarDataAppCurta(String(d.data_venda||data).slice(0,10)),baixa=d.estoque_baixado?(d.consumo_ficha?' · ingredientes baixados pela ficha técnica':' · estoque agora '+Number(d.estoque_atual||0).toLocaleString('pt-BR')):' · estoque preservado, sem nova baixa';
+      msg('vendaMsg',(d.lancamento_retroativo?'Venda retroativa registrada em '+dataTxt+': ':'Venda registrada: ')+d.produto+' · '+q.toLocaleString('pt-BR')+' un · faturamento '+money(d.receita)+' · CMV '+money(d.cmv)+baixa+'.');
+    }
     if($('vDataVenda'))$('vDataVenda').value=hoje;atualizarVendaRetroativaUI();
     await Promise.all([loadProdutosVenda(),loadVendas(),loadProdutos(),loadDashboard(),loadDrinks()])
   }catch(e){msg('vendaMsg',friendly(e),true)}finally{$('btnVenda').disabled=false;$('btnVenda').textContent='Registrar venda'}
@@ -4288,6 +4539,38 @@ async function loadCompras(){
   }catch(e){$('listaCompras').textContent=friendly(e)}
 }
 
+let estoqueCentralLista=[];
+function nomeSetorEstoque(s){return s==='bar'?'🍺 Bar':s==='cozinha'?'🍳 Cozinha':s==='drinks'?'🍹 Drinks':'⚪ Geral'}
+async function loadEstoqueCentral(){
+  if(!$('ecLista'))return;
+  try{
+    estoqueCentralLista=await json(await api('/rest/v1/produtos?select=id,codigo,nome,categoria,unidade,custo_unitario,estoque_atual,estoque_central,estoque_minimo,setor&ativo=eq.true&order=nome.asc'))||[];
+    const valorCentral=estoqueCentralLista.reduce((a,x)=>a+Number(x.estoque_central||0)*Number(x.custo_unitario||0),0);
+    const valorSetores=estoqueCentralLista.reduce((a,x)=>a+Number(x.estoque_atual||0)*Number(x.custo_unitario||0),0);
+    const reposicoes=estoqueCentralLista.filter(x=>Number(x.estoque_atual||0)<=0&&Number(x.estoque_central||0)>0).length;
+    const zerados=estoqueCentralLista.filter(x=>Number(x.estoque_atual||0)+Number(x.estoque_central||0)<=0).length;
+    $('ecProdutos').textContent=estoqueCentralLista.filter(x=>Number(x.estoque_central||0)>0).length.toLocaleString('pt-BR');
+    $('ecValorCentral').textContent=money(valorCentral);$('ecValorSetores').textContent=money(valorSetores);$('ecValorTotal').textContent=money(valorCentral+valorSetores);$('ecReposicoes').textContent=reposicoes.toLocaleString('pt-BR');$('ecZerados').textContent=zerados.toLocaleString('pt-BR');
+    renderEstoqueCentral();
+  }catch(e){$('ecLista').textContent=friendly(e);$('ecResumo').innerHTML='<b>⚠️ Não foi possível carregar o Estoque Central.</b>'}
+}
+function renderEstoqueCentral(){
+  if(!$('ecLista'))return;
+  const busca=normalizarBusca(String($('ecBusca')?.value||'').trim()),setor=String($('ecSetor')?.value||''),status=String($('ecStatus')?.value||'');
+  const lista=(estoqueCentralLista||[]).filter(x=>{
+    const central=Number(x.estoque_central||0),local=Number(x.estoque_atual||0),total=central+local;
+    const situacao=total<=0?'zerado':local<=0&&central>0?'repor':'com_saldo';
+    return (!busca||normalizarBusca((x.codigo||'')+' '+(x.nome||'')).includes(busca))&&(!setor||(x.setor||'geral')===setor)&&(!status||situacao===status);
+  });
+  const valor=lista.reduce((a,x)=>(a+(Number(x.estoque_central||0)+Number(x.estoque_atual||0))*Number(x.custo_unitario||0)),0);
+  $('ecResumo').innerHTML='<b>'+lista.length.toLocaleString('pt-BR')+' produto(s) · '+money(valor)+' em estoque físico</b><br><span class="muted">Central e setores aparecem separados para não esconder mercadoria.</span>';
+  $('ecLista').innerHTML=lista.length?lista.map(x=>{
+    const central=Number(x.estoque_central||0),local=Number(x.estoque_atual||0),total=central+local,u=esc(x.unidade||'un'),setorNome=nomeSetorEstoque(x.setor),valor=total*Number(x.custo_unitario||0);
+    const situacao=total<=0?{c:'danger',t:'🔴 ZERADO TOTAL'}:local<=0&&central>0?{c:'warn',t:'🟡 REPOR SETOR'}:{c:'',t:'🟢 COM SALDO'};
+    return '<div class="item"><div><strong>'+(x.codigo?esc(x.codigo)+' · ':'')+esc(x.nome)+'</strong><small>'+esc(x.categoria||'Sem categoria')+' · '+setorNome+'</small><small>📦 Central '+central.toLocaleString('pt-BR')+' '+u+' · '+setorNome+' '+local.toLocaleString('pt-BR')+' '+u+' · 👑 Total '+total.toLocaleString('pt-BR')+' '+u+'</small><small>Valor total '+money(valor)+' · custo '+money(x.custo_unitario||0)+'</small></div><div class="status-stack"><div class="estoque-qtd">'+total.toLocaleString('pt-BR')+' '+u+'</div><div class="pill '+situacao.c+'">'+situacao.t+'</div></div></div>';
+  }).join(''):'<div class="formula">Nenhum produto encontrado com esses filtros.</div>';
+}
+
 function crSetorTexto(s){return s==='bar'?'Bar':s==='drinks'?'Drinks':s==='cozinha'?'Cozinha':'Setor'}
 function contagemRapidaAtual(){const id=$('crItem')?.value;return (contagemRapidaItens||[]).find(x=>x.id===id)}
 async function loadContagemRapidaOpcoes(){
@@ -4502,7 +4785,49 @@ async function salvarFechamento(){
   const cmvGlobal=row.estoque_inicial+row.compras_periodo-row.estoque_final,cmvReal=Number(fechamentoPreview.cmv_real_valor||0);
   const saidasAut=Math.max(0,cmvReal-Number(fechamentoPreview.cmv_vendas||0)-Number(fechamentoPreview.perdas_valor||0));
   row.observacao='Fechamento inteligente | CMV vendas '+money(fechamentoPreview.cmv_vendas||0)+' | perdas '+money(fechamentoPreview.perdas_valor||0)+' | saídas autorizadas '+money(saidasAut)+' | diferença '+money(cmvGlobal-cmvReal);
-  try{await json(await api('/rest/v1/fechamentos_cmv',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(row)}));msg('fechamentoMsg','Fechamento salvo e registrado no histórico.');loadFechamentos()}catch(e){msg('fechamentoMsg',friendly(e),true)}
+  try{
+    await json(await api('/rest/v1/fechamentos_cmv',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(row)}));
+    msg('fechamentoMsg','🔒 Fechamento salvo. As datas de '+formatarDataAppCurta(row.periodo_inicio)+' a '+formatarDataAppCurta(row.periodo_fim)+' ficaram protegidas contra novas vendas.');
+    await Promise.all([loadFechamentos(),loadProtecaoPeriodos()]);
+  }catch(e){msg('fechamentoMsg',friendly(e),true)}
+}
+async function loadProtecaoPeriodos(){
+  const campo=$('fpData'),status=$('fpStatus'),box=$('fpReabrirBox'),recentes=$('fpRecentes');if(!campo||!status)return;
+  if(!campo.value)campo.value=dataHojeApp();campo.max=dataHojeApp();
+  const data=campo.value;
+  try{
+    const [selecionada,ultimas]=await Promise.all([
+      json(await api('/rest/v1/periodos_operacionais_cmv?select=id,data_operacional,status,fechado_em,reaberto_em,motivo_reabertura&data_operacional=eq.'+encodeURIComponent(data)+'&limit=1')),
+      json(await api('/rest/v1/periodos_operacionais_cmv?select=id,data_operacional,status,fechado_em,reaberto_em,motivo_reabertura&order=data_operacional.desc&limit=12'))
+    ]);
+    const x=selecionada&&selecionada[0];
+    if(!x){
+      status.innerHTML='<b>⚪ DATA ABERTA</b><br>'+formatarDataAppCurta(data)+' ainda não possui fechamento salvo. Vendas seguem permitidas.';
+      if(box)box.classList.add('hide');
+    }else if(x.status==='FECHADO'){
+      status.innerHTML='<b>🔒 FECHADO</b><br>'+formatarDataAppCurta(data)+' está protegido. Novas vendas nesta data ficam bloqueadas até uma reabertura autorizada.';
+      if(box)box.classList.toggle('hide',perfilAtual?.papel!=='admin');
+    }else{
+      status.innerHTML='<b>🔓 REABERTO</b><br>'+formatarDataAppCurta(data)+' voltou a aceitar lançamentos.'+(x.motivo_reabertura?'<br>Motivo: '+esc(x.motivo_reabertura):'');
+      if(box)box.classList.add('hide');
+    }
+    const lista=ultimas||[];
+    if(recentes)recentes.innerHTML=lista.length?lista.map(p=>'<div class="item"><div><strong>'+(p.status==='FECHADO'?'🔒 ':'🔓 ')+formatarDataAppCurta(p.data_operacional)+'</strong><small>'+(p.status==='FECHADO'?'Fechado em '+dataHoraApp(p.fechado_em):'Reaberto em '+dataHoraApp(p.reaberto_em)+(p.motivo_reabertura?' · '+esc(p.motivo_reabertura):''))+'</small></div><div class="pill '+(p.status==='FECHADO'?'danger':'')+'">'+esc(p.status)+'</div></div>').join(''):'Nenhum período fechado ainda.';
+  }catch(e){status.innerHTML='<b>🔴 NÃO FOI POSSÍVEL VERIFICAR</b><br>'+esc(friendly(e));if(recentes)recentes.textContent='Tente novamente.'}
+}
+async function reabrirDiaCmv(){
+  const data=$('fpData')?.value,motivo=$('fpMotivo')?.value.trim()||'';
+  if(perfilAtual?.papel!=='admin')return msg('fpMsg','Somente o administrador pode reabrir um período.',true);
+  if(!data)return msg('fpMsg','Escolha a data.',true);
+  if(motivo.length<5)return msg('fpMsg','Informe o motivo da reabertura com pelo menos 5 caracteres.',true);
+  if(!confirm('Reabrir '+formatarDataAppCurta(data)+'? Novas vendas voltarão a ser permitidas nessa data e o motivo ficará na auditoria.'))return;
+  try{
+    const d=await json(await api('/rest/v1/rpc/reabrir_dia_cmv',{method:'POST',body:JSON.stringify({p_data:data,p_motivo:motivo})}));
+    msg('fpMsg','🔓 '+formatarDataAppCurta(String(d.data_operacional||data).slice(0,10))+' reaberto com auditoria registrada.');
+    if($('fpMotivo'))$('fpMotivo').value='';
+    await loadProtecaoPeriodos();
+    if($('vDataVenda')?.value===data)await verificarDataVendaFechada();
+  }catch(e){msg('fpMsg',friendly(e),true)}
 }
 async function loadFechamentos(){
   try{const d=await json(await api('/rest/v1/vw_fechamentos_cmv?select=*&order=periodo_fim.desc&limit=12'));$('listaFechamentos').innerHTML=d.length?d.map(f=>'<div class="item"><div><strong>'+esc(f.periodo_inicio)+' a '+esc(f.periodo_fim)+'</strong><small>CMV '+money(f.cmv_valor)+' · faturamento '+money(f.faturamento)+'</small></div><div class="pill">'+pct(f.cmv_percentual)+'</div></div>').join(''):'Nenhum fechamento ainda.'}catch(e){$('listaFechamentos').textContent=friendly(e)}
@@ -5376,7 +5701,7 @@ async function loadAll(){
   if(perfilAtual?.papel==='cozinha'){await loadCozinha();return}
   if(perfilAtual?.papel==='bar'){await loadBar();return}
   if(!(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador')){await loadConta();return}
-  await Promise.all([loadProdutos(),loadInsumos(),loadInsumosCompra(),loadFichaOpcoes(),loadProdutosVenda(),loadVendas(),loadCompras(),loadAjustes(),loadProdutosPerda(),loadPerdas(),loadSaidasSemVenda(),loadFechamentos(),loadDashboard(),loadHistoricoDia(),loadRelatorioPeriodo(),loadCozinha(),loadBar()])
+  await Promise.all([loadProdutos(),loadEstoqueCentral(),loadInsumos(),loadInsumosCompra(),loadFichaOpcoes(),loadProdutosVenda(),loadVendas(),loadCompras(),loadAjustes(),loadProdutosPerda(),loadPerdas(),loadSaidasSemVenda(),loadFechamentos(),loadDashboard(),loadHistoricoDia(),loadRelatorioPeriodo(),loadCozinha(),loadBar()])
 }
 const hojeAppInicial=dataHojeApp(),partesHojeApp=hojeAppInicial.split('-').map(Number),anoApp=partesHojeApp[0],mesApp=partesHojeApp[1];
 const d=new Date(hojeAppInicial+'T12:00:00'+APP_UTC_OFFSET),first=new Date(anoApp+'-'+String(mesApp).padStart(2,'0')+'-01T12:00:00'+APP_UTC_OFFSET),fmt=x=>dataNoFusoApp(x);
