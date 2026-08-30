@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.27-base-14-insumo-excluir">
+<meta name="cmv-do-rei-version" content="360.28-cozinha-editar-excluir">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2697,7 +2697,9 @@ async function loadCozinha(){
     }).join(''):'Nenhum item marcado como cozinha.';
     if($('czListaInsumos'))$('czListaInsumos').innerHTML=ins&&ins.length?ins.map(x=>{
       const st=statusEstoqueSetor(x.estoque_atual,x.estoque_minimo);
-      return `<div class="item"><div><strong>${x.codigo?esc(x.codigo)+' · ':''}${esc(x.nome)}</strong><small>${money(x.custo_unitario||0)} / ${esc(x.unidade||'')} · Cozinha ${Number(x.estoque_atual||0).toLocaleString('pt-BR')} · Central ${Number(x.estoque_central||0).toLocaleString('pt-BR')} · Total ${(Number(x.estoque_atual||0)+Number(x.estoque_central||0)).toLocaleString('pt-BR')} · mínimo ${Number(x.estoque_minimo||0).toLocaleString('pt-BR')}</small></div><div class="pill ${st.classe}">${st.texto}</div></div>`;
+      const gestaoInsumo=perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador';
+      const acoes=gestaoInsumo?`<div class="actions"><button class="btn small secondary" data-id="${esc(x.id)}" onclick="abrirEdicaoInsumoCozinha(this.dataset.id)">✏️ Editar</button><button class="btn small danger" data-id="${esc(x.id)}" onclick="excluirInsumoCozinha(this.dataset.id)">🗑️ Excluir</button></div>`:'';
+      return `<div class="item"><div><strong>${x.codigo?esc(x.codigo)+' · ':''}${esc(x.nome)}</strong><small>${money(x.custo_unitario||0)} / ${esc(x.unidade||'')} · Cozinha ${Number(x.estoque_atual||0).toLocaleString('pt-BR')} · Central ${Number(x.estoque_central||0).toLocaleString('pt-BR')} · Total ${(Number(x.estoque_atual||0)+Number(x.estoque_central||0)).toLocaleString('pt-BR')} · mínimo ${Number(x.estoque_minimo||0).toLocaleString('pt-BR')}</small>${acoes}</div><div class="pill ${st.classe}">${st.texto}</div></div>`;
     }).join(''):'Nenhum insumo cadastrado.';
     if($('czListaFichas'))$('czListaFichas').innerHTML=fichas&&fichas.some(f=>produtosCozinha.some(p=>p.id===f.produto_id))?fichas.filter(f=>produtosCozinha.some(p=>p.id===f.produto_id)).map(f=>{const ref=produtosCozinha.find(p=>p.id===f.produto_id);return `<div class="item"><div><strong>${ref?.codigo?esc(ref.codigo)+' · ':''}${esc(f.produto_nome||'Produto')}</strong><small>${Number(f.itens||0).toLocaleString('pt-BR')} ingrediente(s) · custo por unidade ${money(f.custo_por_unidade||0)}</small></div><div class="pill ${f.completa?'':'warn'}">${f.completa?'✅ COMPLETA':'🟡 INCOMPLETA'}</div></div>`}).join(''):'Nenhuma ficha técnica da cozinha.';
     const opts='<option value="">Selecione</option>'+produtosCozinha.map(x=>`<option value="${x.id}">${x.codigo?esc(x.codigo)+' · ':''}${esc(x.nome)} · ${Number(x.estoque_atual||0).toLocaleString('pt-BR')} ${esc(x.unidade||'')}</option>`).join('');
@@ -2728,6 +2730,25 @@ async function loadCozinha(){
     }).join(''):'Nenhuma contagem da cozinha.';
   }catch(e){$('czListaProdutos').textContent='Não consegui carregar a cozinha: '+friendly(e)}
 }
+async function abrirEdicaoInsumoCozinha(id){
+  if(!(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador'))return;
+  const tab=[...document.querySelectorAll('.tab')].find(x=>(x.getAttribute('onclick')||'').includes("go('produtos'"));
+  go('produtos',tab);
+  await loadInsumos();
+  abrirEdicaoInsumo(id);
+}
+async function excluirInsumoCozinha(id){
+  if(!(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador'))return;
+  const atual=(insumosCozinha||[]).find(x=>x.id===id);if(!atual)return;
+  const total=Number(atual.estoque_atual||0)+Number(atual.estoque_central||0);
+  if(total>0)return alert('Este insumo ainda possui estoque. Zere o saldo antes de excluir.');
+  if(!confirm('Excluir '+(atual.codigo?atual.codigo+' · ':'')+atual.nome+'? Ele sairá das listas ativas, mas o histórico ficará preservado.'))return;
+  try{
+    await json(await api('/rest/v1/insumos?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({ativo:false})}));
+    await Promise.all([loadCozinha(),loadInsumos(),loadInsumosCompra(),loadFichaOpcoes(),loadDashboard()]);
+  }catch(e){alert(friendly(e))}
+}
+
 function abrirContagemCozinha(produtoId){
   const sel=$('czContaProduto'),card=$('czOperacaoCard'),q=$('czContaQtd');
   if(!sel||!card)return;
