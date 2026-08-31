@@ -1,0 +1,44 @@
+name: Corrigir REPOR SETOR v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hotfix-repor-setor-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  corrigir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Aplicar correcao
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("index.html")
+          s=p.read_text(encoding="utf-8")
+          old="    const situacao=total<=0?{c:'danger',t:'🔴 ZERADO TOTAL'}:local<=0&&central>0?{c:'warn',t:'🟡 REPOR SETOR'}:{c:'',t:'🟢 COM SALDO'};"
+          add="\n    const acaoSituacao=situacao.t.includes('REPOR SETOR') ? '<button type=\"button\" class=\"pill '+situacao.c+'\" data-id=\"'+esc(x.id)+'\" onclick=\"reporSetorEstoque(this.dataset.id)\" style=\"border:0;cursor:pointer;width:auto;touch-action:manipulation\">'+situacao.t+'</button>' : '<div class=\"pill '+situacao.c+'\">'+situacao.t+'</div>';"
+          if old not in s: raise SystemExit("REPOR SETOR nao encontrado")
+          s=s.replace(old,old+add,1)
+          oldpill="<div class=\"pill '+situacao.c+'\">'+situacao.t+'</div></div>';"
+          if oldpill not in s: raise SystemExit("Status nao encontrado")
+          s=s.replace(oldpill,"'+acaoSituacao+'</div>'; ",1)
+          marker="function crSetorTexto(s){"
+          fn="let reposicaoSetorEmAndamento=false;\nasync function reporSetorEstoque(id){\n if(reposicaoSetorEmAndamento)return;\n const p=(estoqueCentralLista||[]).find(x=>String(x.id)===String(id));\n if(!p)return alert('Produto não encontrado.');\n const central=Number(p.estoque_central||0),setor=String(p.setor||'').trim().toLowerCase();\n if(!setor)return alert('Produto sem setor definido.');\n if(central<=0)return alert('Sem saldo no estoque central.');\n const raw=prompt('Quantidade de '+p.nome+' para '+crSetorTexto(setor)+':','1');\n if(raw===null)return;\n const q=Number(String(raw).replace(',','.'));\n if(!Number.isFinite(q)||q<=0)return alert('Informe uma quantidade válida.');\n if(q>central)return alert('Quantidade maior que o estoque central.');\n if(!confirm('Confirmar transferência de '+q+' '+(p.unidade||'UN')+' de '+p.nome+' para '+crSetorTexto(setor)+'?'))return;\n reposicaoSetorEmAndamento=true;\n try{await json(await api('/rest/v1/rpc/transferir_estoque',{method:'POST',body:JSON.stringify({p_produto_id:p.id,p_quantidade:q,p_destino:setor,p_observacao:'Reposição pelo Estoque Central'})}));alert('Transferência concluída ✅');await Promise.all([loadEstoqueCentral(),loadProdutos(),loadDashboard()]);}catch(e){alert(friendly(e));}finally{reposicaoSetorEmAndamento=false;}\n}\n"
+          if marker not in s: raise SystemExit("Ponto de insercao nao encontrado")
+          s=s.replace(marker,fn+"\n"+marker,1)
+          p.write_text(s,encoding="utf-8")
+          PY
+
+      - name: Salvar correcao
+        run: |
+          git config user.name "CMV do Rei Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Corrige REPOR SETOR" || exit 0
+          git push
