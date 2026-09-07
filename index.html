@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.29-lock14-erro-lancamento">
+<meta name="cmv-do-rei-version" content="360.31-fechamento-bar-seguro">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,6 +23,11 @@ body{margin:0;background:linear-gradient(#080808,#111);color:var(--text);font-fa
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .metric{padding:14px;background:#111;border:1px solid var(--line);border-radius:15px}
 .metric span{font-size:12px;color:var(--muted)}.metric b{display:block;font-size:23px;color:var(--gold2);margin-top:5px}
+.metric.painel-atalho{appearance:none;position:relative;padding-right:38px;color:inherit;font:inherit;text-align:left;cursor:pointer;touch-action:manipulation;transition:border-color .16s ease,background .16s ease,transform .08s ease}
+.metric.painel-atalho::after{content:'›';position:absolute;right:13px;top:11px;color:var(--gold2);font-size:24px;font-weight:900;line-height:1}
+.metric.painel-atalho:hover{border-color:#6b5621;background:#17140d}
+.metric.painel-atalho:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.metric.painel-atalho:active{transform:scale(.98);background:#211b0e}
 input,select,textarea,button{width:100%;font:inherit}
 input,select,textarea{background:#0e0e0e;color:#fff;border:1px solid #343434;border-radius:12px;padding:13px;margin:6px 0 10px}textarea{min-height:96px;resize:vertical;line-height:1.4}
 label{font-size:13px;color:#ddd}
@@ -199,20 +204,20 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
   <div class="sub">Bateu o olho, entendeu o custo.</div>
   <div id="dashboardMsg"></div>
   <div class="grid">
-    <div class="metric"><span>Produtos</span><b id="mProdutos">0</b></div>
-    <div class="metric"><span>CMV real mês</span><b id="mCmvValor">R$ 0</b><small id="mCmv" class="muted" style="display:block;margin-top:4px">0,0% do faturamento</small><small id="mCmvDetalhe" class="muted" style="display:block;margin-top:4px">vendas + perdas + cortesias + consumos</small></div>
-    <div class="metric"><span>🍺 CMV real das bebidas</span><b id="mCmvBebidas">--</b><small class="muted" style="display:block;margin-top:4px">Bar no mês</small></div>
-    <div class="metric"><span>🍽️ CMV real da cozinha</span><b id="mCmvCozinha">--</b><small class="muted" style="display:block;margin-top:4px">Cozinha no mês</small></div>
-    <div class="metric" role="button" tabindex="0" onclick="abrirDrinksPainel()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirDrinksPainel()}"><span>🍹 CMV real dos Drinks</span><b id="mCmvDrinks">--</b><small id="mCmvDrinksDetalhe" class="muted" style="display:block;margin-top:4px">Toque para abrir Drinks</small></div>
-    <div class="metric"><span>Perdas no mês</span><b id="mPerdas">R$ 0</b></div>
-    <div class="metric"><span>Estoque total do Buteco</span><b id="mEstoque">R$ 0</b><small class="muted" style="display:block;margin-top:4px">Produtos + insumos · setores + Central</small></div>
-    <div class="metric"><span>Vendas registradas</span><b id="mVendas">0</b></div>
-    <div class="metric"><span>Alertas estoque</span><b id="mBaixo">0</b></div>
-    <div class="metric"><span>Pedidos cozinha</span><b id="mSolicCozinha">0</b></div>
-    <div class="metric"><span>Divergências cozinha</span><b id="mDivCozinha">0</b></div>
-    <div class="metric"><span>Pedidos bar</span><b id="mSolicBar">0</b></div>
-    <div class="metric"><span>Divergências bar</span><b id="mDivBar">0</b></div>
-    <div class="metric" role="button" tabindex="0" onclick="abrirCentralDivergenciasPainel()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirCentralDivergenciasPainel()}"><span>⚠️ Divergências pendentes</span><b id="mDivPendentesEstoque">0</b><small id="mDivPendentesValor" class="muted" style="display:block;margin-top:4px">R$ 0,00 em análise</small></div>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir lista de produtos" onclick="abrirProdutosPainel()"><span>Produtos</span><b id="mProdutos">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir detalhamento do CMV real do mês" onclick="abrirSecaoPainel('perdas','cmvRealDetalhadoCard')"><span>CMV real mês</span><b id="mCmvValor">R$ 0</b><small id="mCmv" class="muted" style="display:block;margin-top:4px">0,0% do faturamento</small><small id="mCmvDetalhe" class="muted" style="display:block;margin-top:4px">vendas + perdas + cortesias + consumos</small></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir painel do Bar" onclick="abrirSecaoPainel('bar')"><span>🍺 CMV real das bebidas</span><b id="mCmvBebidas">--</b><small class="muted" style="display:block;margin-top:4px">Bar no mês</small></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir painel da Cozinha" onclick="abrirSecaoPainel('cozinha')"><span>🍽️ CMV real da cozinha</span><b id="mCmvCozinha">--</b><small class="muted" style="display:block;margin-top:4px">Cozinha no mês</small></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir painel de Drinks" onclick="abrirSecaoPainel('drinks')"><span>🍹 CMV real dos Drinks</span><b id="mCmvDrinks">--</b><small id="mCmvDrinksDetalhe" class="muted" style="display:block;margin-top:4px">Toque para abrir Drinks</small></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir resumo das perdas" onclick="abrirSecaoPainel('perdas','resumoPerdasCard')"><span>Perdas no mês</span><b id="mPerdas">R$ 0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir Estoque Central" onclick="abrirSecaoPainel('central')"><span>Estoque total do Buteco</span><b id="mEstoque">R$ 0</b><small class="muted" style="display:block;margin-top:4px">Produtos + insumos · setores + Central</small></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir histórico de vendas" onclick="abrirSecaoPainel('vendas','historicoVendasCard')"><span>Vendas registradas</span><b id="mVendas">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir alertas de estoque" onclick="abrirAlertasEstoquePainel()"><span>Alertas estoque</span><b id="mBaixo">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir solicitações da Cozinha" onclick="abrirSecaoPainel('cozinha','czSolicitacoesCard')"><span>Pedidos cozinha</span><b id="mSolicCozinha">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir divergências da Cozinha" onclick="abrirCentralDivergenciasPainel()"><span>Divergências cozinha</span><b id="mDivCozinha">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir solicitações do Bar" onclick="abrirSecaoPainel('bar','brSolicitacoesCard')"><span>Pedidos bar</span><b id="mSolicBar">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir divergências do Bar" onclick="abrirCentralDivergenciasPainel()"><span>Divergências bar</span><b id="mDivBar">0</b></button>
+    <button type="button" class="metric painel-atalho" aria-label="Abrir Central de Divergências" onclick="abrirCentralDivergenciasPainel()"><span>⚠️ Divergências pendentes</span><b id="mDivPendentesEstoque">0</b><small id="mDivPendentesValor" class="muted" style="display:block;margin-top:4px">R$ 0,00 em análise</small></button>
   </div>
   <div class="card">
     <h2>Resumo de Hoje</h2>
@@ -843,7 +848,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <div id="listaSolicitacoesEstorno" class="muted">Nenhuma solicitação pendente.</div>
   </div>
 
-  <div class="card">
+  <div class="card" id="resumoPerdasCard">
     <h2>Resumo das perdas</h2>
     <div class="preview">
       <div><span>Perdas hoje</span><b id="peHoje">R$ 0,00</b></div>
@@ -1048,7 +1053,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <div id="czSolicitaMsg"></div>
   </div>
 
-  <div class="card">
+  <div class="card" id="czSolicitacoesCard">
     <h2>📋 Solicitações da cozinha</h2>
     <div id="czListaSolicitacoes" class="muted">Nenhuma solicitação.</div>
   </div>
@@ -1191,7 +1196,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
     <div id="brSolicitaMsg"></div>
   </div>
 
-  <div class="card">
+  <div class="card" id="brSolicitacoesCard">
     <h2>📋 Solicitações do bar</h2>
     <div id="brListaSolicitacoes" class="muted">Nenhuma solicitação.</div>
   </div>
@@ -1213,7 +1218,7 @@ input[type="date"]{width:100%;max-width:100%;min-width:0;-webkit-appearance:none
       <div><span>Pendentes de contagem</span><b id="brFechPendentes">0</b></div><div><span>Saídas autorizadas</span><b id="brFechSaidas">0</b></div>
     </div>
     <div id="brFechStatus" class="formula" style="margin-top:10px">Escolha a data e analise o fechamento.</div>
-    <button id="btnAprovarFechamentoBar" type="button" class="btn" onclick="aprovarFechamentoBar()" style="margin-top:10px">✅ Aprovar fechamento conciliado</button>
+    <button id="btnAprovarFechamentoBar" type="button" class="btn" onclick="aprovarFechamentoBar()" style="margin-top:10px" disabled>✅ Aprovar fechamento conciliado</button>
     <div id="brFechAprovacao" class="muted" style="margin-top:8px">Ainda não aprovado.</div>
     <div id="brFechLista" class="muted" style="margin-top:10px"></div>
     <details style="margin-top:10px">
@@ -1771,6 +1776,7 @@ let fechamentoPreview={};
 let produtosCozinha=[];
 let insumosCozinha=[];
 let produtosBar=[];
+let fechamentoBarPodeAprovar=false;
 let produtosDrinks=[];
 let produtosDestiladosBar=[];
 let insumosDrinks=[];
@@ -3068,7 +3074,7 @@ async function analisarFechamentoBar(btn){
     if(btn){btn.disabled=false;btn.textContent=original}
   }
 }
-async function loadAprovacaoFechamentoBar(data){
+async function loadAprovacaoFechamentoBar(data,podeAprovar=fechamentoBarPodeAprovar){
   if(!$('brFechAprovacao'))return;
   try{
     const d=data||$('brFechData')?.value||dataHojeApp();
@@ -3080,7 +3086,7 @@ async function loadAprovacaoFechamentoBar(data){
       if($('btnAprovarFechamentoBar'))$('btnAprovarFechamentoBar').disabled=true;
     }else{
       $('brFechAprovacao').textContent='Ainda não aprovado.';
-      if($('btnAprovarFechamentoBar'))$('btnAprovarFechamentoBar').disabled=false;
+      if($('btnAprovarFechamentoBar'))$('btnAprovarFechamentoBar').disabled=!podeAprovar;
     }
   }catch(e){$('brFechAprovacao').textContent='Não consegui consultar a aprovação.'}
 }
@@ -3158,6 +3164,7 @@ async function concluirAcaoCorretivaBar(id){
 }
 async function aprovarFechamentoBar(){
   const data=$('brFechData')?.value||dataHojeApp();
+  if(!fechamentoBarPodeAprovar)return msg('brFechMsg','Fechamento bloqueado. Conclua todas as contagens e resolva faltas ou sobras antes de aprovar.',true);
   if(!confirm('Aprovar o fechamento de '+data+'? Só será permitido se todos os itens estiverem conciliados.'))return;
   const btn=$('btnAprovarFechamentoBar');
   if(btn){btn.disabled=true;btn.textContent='Aprovando...'}
@@ -3216,6 +3223,8 @@ async function loadFechamentoBar(){
   if(!$('brFechLista')||!(perfilAtual?.papel==='admin'||perfilAtual?.papel==='operador'))return;
   const data=$('brFechData')?.value||dataHojeApp();
   if($('brFechData'))$('brFechData').value=data;
+  fechamentoBarPodeAprovar=false;
+  if($('btnAprovarFechamentoBar'))$('btnAprovarFechamentoBar').disabled=true;
   try{
     const [lista,tratamentos]=await Promise.all([
       json(await api('/rest/v1/rpc/fechamento_diario_bar',{method:'POST',body:JSON.stringify({p_data:data})})),
@@ -3225,6 +3234,7 @@ async function loadFechamentoBar(){
     const arr=lista||[],conferidos=arr.filter(x=>['BATEU','FALTA','SOBRA'].includes(x.status));
     const faltas=arr.filter(x=>x.status==='FALTA'),sobras=arr.filter(x=>x.status==='SOBRA');
     const pendentes=arr.filter(x=>x.status==='SEM_ABERTURA'||x.status==='SEM_FECHAMENTO');
+    fechamentoBarPodeAprovar=arr.length>0&&faltas.length===0&&sobras.length===0&&pendentes.length===0&&arr.every(x=>x.status==='BATEU');
     const valorFalta=faltas.reduce((a,x)=>a+Math.abs(Number(x.valor_diferenca||0)),0);
     const totalSaidas=arr.reduce((a,x)=>a+Number(x.saidas_autorizadas||0),0);
     $('brFechItens').textContent=conferidos.length.toLocaleString('pt-BR');
@@ -3251,9 +3261,11 @@ async function loadFechamentoBar(){
       const tratarBtn=(x.status==='FALTA'||x.status==='SOBRA')?`<button class="btn small secondary" onclick="tratarDivergenciaBar('${esc(x.produto_id)}')">🧭 ${trat?'Atualizar apuração':'Tratar divergência'}</button>`:'';
       return `<div class="item"><div><strong>${prodRef?.codigo?esc(prodRef.codigo)+' · ':''}${esc(x.produto_nome)}</strong><small>Abertura ${abertura} ${esc(x.unidade||'')} · transf. líquidas ${Number(x.entradas||0).toLocaleString('pt-BR')} · ajustes ${Number(x.ajustes||0).toLocaleString('pt-BR')} · vendas ${Number(x.vendas||0).toLocaleString('pt-BR')} · perdas ${Number(x.perdas||0).toLocaleString('pt-BR')} · saídas autorizadas ${Number(x.saidas_autorizadas||0).toLocaleString('pt-BR')}</small><small>Esperado ${esperado} · contado ${fechamento} · diferença ${dif}${x.valor_diferenca!=null?' · '+money(Math.abs(Number(x.valor_diferenca||0))):''}</small>${resp.length?'<small>'+esc(resp.join(' · '))+'</small>':''}${tratHtml}${tratarBtn}</div><div class="pill ${cl}">${st}</div></div>`;
     }).join(''):'Nenhum item do Bar.';
-    await loadAprovacaoFechamentoBar(data);
+    await loadAprovacaoFechamentoBar(data,fechamentoBarPodeAprovar);
     await loadHistoricoDivergenciasBar();
   }catch(e){
+    fechamentoBarPodeAprovar=false;
+    if($('btnAprovarFechamentoBar'))$('btnAprovarFechamentoBar').disabled=true;
     $('brFechStatus').innerHTML='<b>⚠️ Não foi possível analisar</b><br>'+esc(friendly(e));
     $('brFechLista').innerHTML='';
   }
@@ -5437,7 +5449,35 @@ async function abrirProdutosSemMinimo(){
     document.querySelector('.minimo-lote-input')?.focus();
   },80);
 }
-function abrirDrinksPainel(){const tab=[...document.querySelectorAll('.tab')].find(x=>(x.getAttribute('onclick')||'').includes("go('drinks'"));go('drinks',tab)}
+function tabDaSecaoPainel(secId){
+  return [...document.querySelectorAll('.tab')].find(x=>(x.getAttribute('onclick')||'').includes("go('"+secId+"'"));
+}
+function abrirSecaoPainel(secId,cardId=''){
+  const sec=$(secId);if(!sec)return;
+  go(secId,tabDaSecaoPainel(secId));
+  setTimeout(()=>{
+    const alvo=cardId?$(cardId):sec;
+    if(cardId&&SECOES_COMPACTAS.includes(secId)){
+      prepararSecaoCompacta(secId);
+      abrirJanelaSecao(secId,cardId,false);
+    }
+    if(alvo?.tagName==='DETAILS')alvo.open=true;
+    alvo?.scrollIntoView({behavior:'smooth',block:'start'});
+  },180);
+}
+async function abrirProdutosPainel(){
+  go('produtos',tabDaSecaoPainel('produtos'));
+  if(!(produtosLista||[]).length)await loadProdutos();
+  abrirJanelaProduto('produtoConsultaCard',false);
+  mostrarTodosProdutosConsulta();
+  setTimeout(()=>$('produtoConsultaCard')?.scrollIntoView({behavior:'smooth',block:'start'}),60);
+}
+function abrirAlertasEstoquePainel(){
+  const card=$('atencaoEstoqueCard');if(!card)return;
+  card.open=true;
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function abrirDrinksPainel(){abrirSecaoPainel('drinks')}
 function abrirCentralDivergencias(){
   const tab=[...document.querySelectorAll('.tab')].find(x=>(x.getAttribute('onclick')||'').includes("go('fechamento'"));
   go('fechamento',tab);
