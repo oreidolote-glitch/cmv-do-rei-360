@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="application-name" content="CMV do Rei 360">
-<meta name="cmv-do-rei-version" content="360.31-fechamento-bar-seguro">
+<meta name="cmv-do-rei-version" content="360.32-consultar-produto-estoque-total">
 <meta name="apple-mobile-web-app-title" content="CMV do Rei 360">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -3597,7 +3597,7 @@ async function loadProdutos(){
     montarCategoriasCadastroProduto();
     $('listaProdutos').innerHTML=produtosLista.length?produtosLista.map(p=>{
       const i=imap[p.id]||{};
-      const estoque=Number(p.estoque_atual||0),minimo=Number(p.estoque_minimo||0),semMinimo=minimo<=0,esgotado=!semMinimo&&estoque<=0,baixo=!semMinimo&&!esgotado&&estoque<=minimo;
+      const estoqueSetor=Number(p.estoque_atual||0),estoqueCentral=Number(p.estoque_central||0),estoque=estoqueSetor+estoqueCentral,minimo=Number(p.estoque_minimo||0),semMinimo=minimo<=0,esgotado=!semMinimo&&estoque<=0,baixo=!semMinimo&&!esgotado&&estoque<=minimo;
       const custo=Number(p.custo_unitario||0),custoCadastrado=custo>0;
       const metaMin=Number(i.meta_min||28),metaMax=Number(i.meta_max||28),cmv=custoCadastrado?Number(p.cmv_percentual||0):0;
       const cmvAtualBloco=custoCadastrado?'<div class="produto-cmv-atual"><span>CMV atual do produto</span><b>'+pct(cmv)+'</b></div>':'<div class="produto-cmv-atual indisponivel"><span>CMV atual do produto</span><b>Não calculado · cadastre o custo</b></div>';
@@ -3628,7 +3628,9 @@ async function loadProdutos(){
       const cmvLabel=!custoCadastrado?'⚪ CUSTO NÃO CADASTRADO':statusCategoria(cmv,metaMin,metaMax);
       const statusBusca=[esgotado?'esgotado':'',baixo?'estoque_baixo':'',acima?'cmv_alto':'',!custoCadastrado?'sem_custo':'',semMinimo?'sem_minimo':''].filter(Boolean).join(' ');
       const busca=((p.codigo||'')+' '+(p.nome||'')).toLowerCase();
-      return `<div class="item produto-consulta-item" data-id="${p.id}" data-busca="${esc(busca)}" data-categoria="${esc(p.categoria||'')}" data-setor="${esc(p.setor||setorProdutoLocal(p.categoria))}" data-status="${esc(statusBusca)}"><div><strong>${esc(p.nome)}</strong><small><b>Código:</b> ${esc(p.codigo||'—')}</small><small>${esc(p.categoria||'Sem categoria')} · estoque ${Number(p.estoque_atual).toLocaleString('pt-BR')} · custo ${money(custo)} · venda ${money(p.preco_venda)}</small>${cmvAtualBloco}${blocoCmv}<div class="actions"><button class="btn small secondary" data-id="${p.id}" onclick="abrirEditar(this.dataset.id)">Editar</button><button class="btn small secondary" data-id="${p.id}" onclick="abrirAjuste(this.dataset.id)">Ajustar estoque</button></div></div><div class="status-stack"><div class="pill ${estoqueClass}">${estoqueStatus}</div><div class="pill ${cmvClass}">${cmvLabel}</div></div></div>`;
+      const setorNome=setorCmvProdutoTexto(p.setor||setorProdutoLocal(p.categoria));
+      const unidade=esc(p.unidade||'un');
+      return `<div class="item produto-consulta-item" data-id="${p.id}" data-busca="${esc(busca)}" data-categoria="${esc(p.categoria||'')}" data-setor="${esc(p.setor||setorProdutoLocal(p.categoria))}" data-status="${esc(statusBusca)}"><div><strong>${esc(p.nome)}</strong><small><b>Código:</b> ${esc(p.codigo||'—')}</small><small>${esc(p.categoria||'Sem categoria')} · 📦 Central ${estoqueCentral.toLocaleString('pt-BR')} ${unidade} · ${setorNome} ${estoqueSetor.toLocaleString('pt-BR')} ${unidade} · 👑 Total ${estoque.toLocaleString('pt-BR')} ${unidade}</small><small>Custo ${money(custo)} · venda ${money(p.preco_venda)}</small>${cmvAtualBloco}${blocoCmv}<div class="actions"><button class="btn small secondary" data-id="${p.id}" onclick="abrirEditar(this.dataset.id)">Editar</button><button class="btn small secondary" data-id="${p.id}" onclick="abrirAjuste(this.dataset.id)">Ajustar estoque</button></div></div><div class="status-stack"><div class="pill ${estoqueClass}">${estoqueStatus}</div><div class="pill ${cmvClass}">${cmvLabel}</div></div></div>`;
     }).join(''):'Nenhum produto ainda.';
     montarCategoriasProdutoConsulta();
     filtrarProdutosConsulta();
